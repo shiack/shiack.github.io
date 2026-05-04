@@ -1,0 +1,298 @@
+/* 音乐播放器组件样式 */
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    left: auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-color);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    min-width: 380px;
+    max-width: calc(100vw - 40px);
+    cursor: default;
+}
+
+.music-player.dragging {
+    cursor: grabbing;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+}
+
+/* 折叠状态视图 - 不再使用 */
+.music-collapsed-view {
+    display: none;
+}
+
+/* 展开状态视图 - 始终显示 */
+.music-expanded-view {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+/* 拖拽手柄 */
+.music-drag-handle {
+    cursor: grab;
+    padding: 6px 10px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    user-select: none;
+    background: var(--bg-gradient-start);
+    border: 1px solid var(--border-color);
+    min-width: 32px;
+    height: 32px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.music-drag-handle:hover {
+    background: var(--bg-gradient-mid);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.music-drag-handle:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+/* 折叠状态下的歌曲名 */
+.music-title-collapsed {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+/* 播放状态指示器 */
+.music-playing-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.music-playing-indicator.playing {
+    background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+    animation: playing-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes playing-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+/* 控制按钮 */
+.music-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--bg-gradient-start);
+    color: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.music-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-gradient-start);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.music-btn:active {
+    transform: scale(0.95);
+}
+
+.music-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.music-btn-play.playing {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 音乐信息 */
+.music-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+    gap: 2px;
+}
+
+.music-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.music-artist {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* 进度条容器 */
+.music-progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 150px;
+}
+
+.music-progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+}
+
+.music-progress:hover .music-progress-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.music-progress-tooltip {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--text-color);
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: var(--shadow-color);
+}
+
+.music-progress-bar {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+.music-progress-thumb {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    box-shadow: 0 0 10px var(--primary-color);
+    transition: all 0.15s ease;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.music-progress-thumb:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.music-progress-thumb.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 0 25px var(--primary-color);
+}
+
+.music-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .music-player {
+        bottom: 10px;
+        padding: 6px 10px;
+        gap: 6px;
+        min-width: 140px;
+    }
+    
+    .music-title-collapsed {
+        max-width: 80px;
+        font-size: 12px;
+    }
+    
+    .music-expanded-view {
+        gap: 8px;
+    }
+    
+    .music-info {
+        min-width: 80px;
+    }
+    
+    .music-title {
+        font-size: 12px;
+    }
+    
+    .music-progress-container {
+        width: 100px;
+    }
+    
+    .music-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}

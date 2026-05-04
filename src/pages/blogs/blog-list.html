@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客 | CyberNavi</title>
+    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
+    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+    <script src="/src/js/modules/blog-data.js"></script>
+    <script src="/src/js/modules/music-config.js"></script>
+</head>
+<body class="theme-cyber">
+<!-- 主题切换按钮 -->
+<div class="theme-toggle">
+        <button class="theme-btn workspace" id="themeWorkspace" title="简约工作风">💻</button>
+        <button class="theme-btn cyber active" id="themeCyber" title="赛博朋克">💫</button>
+        <button class="theme-btn nature" id="themeNature" title="小清新自然">🌿</button>
+    </div>
+
+<!-- 背景音乐播放器组件 -->
+<div id="musicPlayerContainer"></div>
+<script src="/src/components/music-player/music-player.js"></script>
+
+<div class="container">
+    <div class="nav-bar animate-fade-in">
+        <a href="/index.html" class="logo-link"><div class="logo">✦ shiack ✦</div></a>
+        <div class="nav-links">
+            <a href="/index.html">⌾ 简历</a>
+            <a id="blogNavLink" href="/src/pages/blogs/blog-list.html" class="active">◉ 博客</a>
+        </div>
+    </div>
+
+    <div class="cyber-card animate-fade-in delay-1">
+        <h2 class="animate-fade-in delay-2">📡 技术信号 · 所有博客</h2>
+        <div id="filter-tags" class="tag-cloud animate-fade-in delay-3"></div>
+        <div id="blog-list" class="blog-grid animate-fade-in delay-4">加载中...</div>
+    </div>
+    <footer class="animate-fade-in delay-5">✦ 赛博 · 博客系统 ✦</footer>
+</div>
+
+<script>
+    // ========== 背景音乐播放器 ==========
+    let audioPlayer = null;
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    let progressInterval = null;
+    let isDraggingProgress = false;
+    let isDraggingPlayer = false;
+    let dragOffset = { x: 0, y: 0 };
+
+    // 获取音乐列表（从配置文件）
+    function getMusicList() {
+        if (typeof MUSIC_LIST !== 'undefined') {
+            return MUSIC_LIST.map(item => ({
+                ...item,
+                path: '../assets/music/' + item.file
+            }));
+        }
+        return [
+            { title: 'Cyber Dreams', path: '../assets/music/cyber-dreams.mp3' },
+            { title: 'Neon Night', path: '../assets/music/neon-night.mp3' },
+            { title: 'Digital Sunset', path: '../assets/music/digital-sunset.mp3' }
+        ];
+    }
+
+    const BACKGROUND_MUSIC = getMusicList();
+
+    function initMusicPlayer() {
+        const toggleBtn = document.getElementById('musicToggle');
+        const nextBtn = document.getElementById('musicNext');
+        const prevBtn = document.getElementById('musicPrev');
+        const progressBar = document.getElementById('musicProgress');
+        const dragHandle = document.getElementById('musicDragHandle');
+        const player = document.getElementById('musicPlayer');
+        
+        audioPlayer = new Audio();
+        audioPlayer.volume = 0.3;
+        
+        currentTrackIndex = Math.floor(Math.random() * BACKGROUND_MUSIC.length);
+        loadTrack(currentTrackIndex);
+        
+        toggleBtn.addEventListener('click', toggleMusic);
+        nextBtn.addEventListener('click', playNext);
+        prevBtn.addEventListener('click', playPrev);
+        audioPlayer.addEventListener('ended', playNext);
+        
+        progressBar.addEventListener('click', handleProgressClick);
+        
+        const thumb = document.getElementById('musicProgressThumb');
+        thumb.addEventListener('mousedown', startDragProgress);
+        
+        dragHandle.addEventListener('mousedown', startDragPlayer);
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    function loadTrack(index) {
+        const track = BACKGROUND_MUSIC[index];
+        if (track) {
+            audioPlayer.src = track.url;
+            document.getElementById('musicTitle').textContent = track.title;
+            document.getElementById('musicArtist').textContent = track.artist;
+            updateTimeDisplay(0, track.duration || 0);
+            updateProgress(0);
+        }
+    }
+
+    function toggleMusic() {
+        const toggleBtn = document.getElementById('musicToggle');
+        
+        if (isPlaying) {
+            audioPlayer.pause();
+            toggleBtn.textContent = '♪';
+            toggleBtn.classList.remove('play');
+            clearInterval(progressInterval);
+        } else {
+            audioPlayer.play().catch(() => {});
+            toggleBtn.textContent = '⏸';
+            toggleBtn.classList.add('play');
+            startProgressUpdate();
+        }
+        isPlaying = !isPlaying;
+    }
+
+    function playNext() {
+        currentTrackIndex = (currentTrackIndex + 1) % BACKGROUND_MUSIC.length;
+        loadTrack(currentTrackIndex);
+        if (isPlaying) {
+            audioPlayer.play();
+        }
+    }
+
+    function playPrev() {
+        currentTrackIndex = (currentTrackIndex - 1 + BACKGROUND_MUSIC.length) % BACKGROUND_MUSIC.length;
+        loadTrack(currentTrackIndex);
+        if (isPlaying) {
+            audioPlayer.play();
+        }
+    }
+
+    function formatTime(seconds) {
+        if (isNaN(seconds) || !isFinite(seconds)) {
+            return '00:00';
+        }
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimeDisplay(current, duration) {
+        document.getElementById('musicTime').textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+    }
+
+    function updateProgress(progressPercent) {
+        const bar = document.getElementById('musicProgressBar');
+        const thumb = document.getElementById('musicProgressThumb');
+        bar.style.width = `${progressPercent}%`;
+        thumb.style.left = `${progressPercent}%`;
+    }
+
+    function startProgressUpdate() {
+        progressInterval = setInterval(() => {
+            if (audioPlayer.duration > 0 && !isDraggingProgress) {
+                const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                updateProgress(progress);
+                updateTimeDisplay(audioPlayer.currentTime, audioPlayer.duration);
+            }
+        }, 100);
+    }
+
+    function handleProgressClick(e) {
+        const progressBar = document.getElementById('musicProgress');
+        const rect = progressBar.getBoundingClientRect();
+        const percent = ((e.clientX - rect.left) / rect.width) * 100;
+        const clampedPercent = Math.max(0, Math.min(100, percent));
+        audioPlayer.currentTime = (clampedPercent / 100) * audioPlayer.duration;
+        updateProgress(clampedPercent);
+    }
+
+    function startDragProgress(e) {
+        isDraggingProgress = true;
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function startDragPlayer(e) {
+        isDraggingPlayer = true;
+        const player = document.getElementById('musicPlayer');
+        const rect = player.getBoundingClientRect();
+        dragOffset.x = e.clientX - rect.left;
+        dragOffset.y = e.clientY - rect.top;
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleMouseMove(e) {
+        if (isDraggingProgress) {
+            const progressBar = document.getElementById('musicProgress');
+            const rect = progressBar.getBoundingClientRect();
+            const percent = ((e.clientX - rect.left) / rect.width) * 100;
+            const clampedPercent = Math.max(0, Math.min(100, percent));
+            updateProgress(clampedPercent);
+            if (audioPlayer.duration > 0) {
+                audioPlayer.currentTime = (clampedPercent / 100) * audioPlayer.duration;
+                updateTimeDisplay(audioPlayer.currentTime, audioPlayer.duration);
+            }
+        } else if (isDraggingPlayer) {
+            const player = document.getElementById('musicPlayer');
+            let newX = e.clientX - dragOffset.x;
+            let newY = e.clientY - dragOffset.y;
+            
+            const maxX = window.innerWidth - player.offsetWidth - 10;
+            const maxY = window.innerHeight - player.offsetHeight - 10;
+            newX = Math.max(10, Math.min(maxX, newX));
+            newY = Math.max(10, Math.min(maxY, newY));
+            
+            player.style.left = `${newX}px`;
+            player.style.top = `${newY}px`;
+            player.style.bottom = 'auto';
+        }
+    }
+
+    function handleMouseUp() {
+        isDraggingProgress = false;
+        isDraggingPlayer = false;
+    }
+
+    // ========== 主题切换功能 ==========
+    // 生成矩阵雨字符
+    function generateMatrixRain() {
+        const matrixBg = document.getElementById('matrixBg');
+        if (!matrixBg) return;
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()+=<>?/|\\~`{}[];:,.+-_';
+        const columnCount = 50; // 固定50列
+        const spacing = window.innerWidth / columnCount;
+        
+        for (let i = 0; i < columnCount; i++) {
+            const column = document.createElement('div');
+            column.className = 'init-matrix-column';
+            column.style.left = i * spacing + 'px';
+            column.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            column.style.animationDelay = Math.random() * 6 + 's';
+            
+            let charsHTML = '';
+            const charCount = Math.floor(Math.random() * 30 + 20);
+            for (let j = 0; j < charCount; j++) {
+                let brightnessClass = '';
+                const brightnessRatio = j / charCount;
+                if (brightnessRatio > 0.9) brightnessClass = 'bright';
+                else if (brightnessRatio > 0.7) brightnessClass = 'medium';
+                else if (brightnessRatio > 0.4) brightnessClass = 'dim';
+                else brightnessClass = 'faint';
+                
+                // 关键：根据字符位置计算延迟，让字符随着下落逐渐出现
+                const appearDelay = (j / charCount) * 2; // 延迟0-2秒
+                if (Math.random() > 0.8) {
+                    charsHTML += `<span class="init-matrix-char ${brightnessClass}" style="height: 8px; animation-delay: ${appearDelay}s;"></span>`;
+                } else {
+                    charsHTML += `<span class="init-matrix-char ${brightnessClass}" style="animation-delay: ${appearDelay}s;">${chars[Math.floor(Math.random() * chars.length)]}</span>`;
+                }
+            }
+            column.innerHTML = charsHTML;
+            matrixBg.appendChild(column);
+        }
+    }
+
+    function initAnimation() {
+        generateMatrixRain();
+        
+        const overlay = document.getElementById('initOverlay');
+        if (!overlay) return;
+        
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            document.querySelectorAll('.animate-fade-in').forEach(el => {
+                el.style.opacity = '';
+            });
+        }, 3500);
+    }
+
+    function setTheme(theme) {
+        const body = document.body;
+        const workspaceBtn = document.getElementById('themeWorkspace');
+        const cyberBtn = document.getElementById('themeCyber');
+        const natureBtn = document.getElementById('themeNature');
+        
+        workspaceBtn.classList.remove('active');
+        cyberBtn.classList.remove('active');
+        natureBtn.classList.remove('active');
+        
+        switch(theme) {
+            case 'workspace':
+                body.className = 'theme-workspace';
+                workspaceBtn.classList.add('active');
+                break;
+            case 'cyber':
+                body.className = 'theme-cyber';
+                cyberBtn.classList.add('active');
+                break;
+            case 'nature':
+                body.className = 'theme-nature';
+                natureBtn.classList.add('active');
+                break;
+            default:
+                body.className = 'theme-cyber';
+                cyberBtn.classList.add('active');
+                theme = 'cyber';
+        }
+        
+        localStorage.setItem('theme', theme);
+    }
+
+    // 使用从 blog-data.js 加载的全局 BLOG_POSTS 变量
+    let currentTag = null;
+    const BLOG_FOLDER = BLOG_CONFIG.BLOG_FOLDER;
+    const USE_CLEAN_URL = BLOG_CONFIG.USE_CLEAN_URL;
+
+    function getPostUrl(postId) {
+        // 使用绝对路径引用 Markdown 文件
+        const mdPath = '/src/assets/posts/' + postId + '.md';
+        return 'blog-detail.html?file=' + encodeURIComponent(mdPath);
+    }
+
+    function getAllTags() {
+        const set = new Set();
+        BLOG_POSTS.forEach(p => p.tags.forEach(t => set.add(t)));
+        return Array.from(set).sort();
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderFilters() {
+        const tags = getAllTags();
+        const container = document.getElementById('filter-tags');
+        container.innerHTML = `<span style="opacity:0.7;">🏷️ 过滤标签：</span>` +
+            tags.map(tag => `<span class="tag ${currentTag === tag ? 'active' : ''}" data-tag="${tag}">#${tag}</span>`).join('');
+        
+        document.querySelectorAll('#filter-tags .tag[data-tag]').forEach(el => {
+            el.addEventListener('click', () => {
+                const tag = el.getAttribute('data-tag');
+                currentTag = currentTag === tag ? null : tag;
+                renderFilters();
+                renderBlogList();
+            });
+        });
+    }
+
+    function renderBlogList() {
+        let filtered = currentTag ? BLOG_POSTS.filter(p => p.tags.includes(currentTag)) : BLOG_POSTS;
+        const container = document.getElementById('blog-list');
+        
+        if (filtered.length === 0) {
+            container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:3rem;">🌀 没有找到相关博客</div>';
+            return;
+        }
+        
+        container.innerHTML = filtered.map((post, index) => `
+            <div class="blog-card" style="animation-delay: ${index * 0.1}s;">
+                <a href="${getPostUrl(post.id)}" class="blog-title-link">📄 ${escapeHtml(post.title)}</a>
+                <div class="blog-meta">🗓️ ${post.date}</div>
+                <div class="blog-tags">${post.tags.map(t => `<span class="mini-tag">#${escapeHtml(t)}</span>`).join('')}</div>
+                <p>${escapeHtml(post.summary)}</p>
+                <a href="${getPostUrl(post.id)}" class="read-more">⟢ 阅读全文 ⟢</a>
+            </div>
+        `).join('');
+    }
+
+    // 设置导航链接
+    // ========== 主题切换组件拖拽功能 ==========
+    let isDraggingThemeToggle = false;
+    let themeToggleOffsetX = 0;
+    let themeToggleOffsetY = 0;
+    
+    function initThemeToggleDrag() {
+        const themeToggle = document.querySelector('.theme-toggle');
+        
+        themeToggle.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('theme-btn')) return;
+            isDraggingThemeToggle = true;
+            themeToggle.classList.add('dragging');
+            themeToggleOffsetX = e.clientX - themeToggle.getBoundingClientRect().left;
+            themeToggleOffsetY = e.clientY - themeToggle.getBoundingClientRect().top;
+            document.addEventListener('mousemove', handleThemeToggleDrag);
+            document.addEventListener('mouseup', stopThemeToggleDrag);
+        });
+        
+        function handleThemeToggleDrag(e) {
+            if (!isDraggingThemeToggle) return;
+            
+            const maxX = window.innerWidth - themeToggle.offsetWidth - 10;
+            const maxY = window.innerHeight - themeToggle.offsetHeight - 10;
+            let newX = e.clientX - themeToggleOffsetX;
+            let newY = e.clientY - themeToggleOffsetY;
+            
+            newX = Math.max(10, Math.min(maxX, newX));
+            newY = Math.max(10, Math.min(maxY, newY));
+            
+            themeToggle.style.left = newX + 'px';
+            themeToggle.style.top = newY + 'px';
+            themeToggle.style.right = 'auto';
+        }
+        
+        function stopThemeToggleDrag() {
+            isDraggingThemeToggle = false;
+            themeToggle.classList.remove('dragging');
+            document.removeEventListener('mousemove', handleThemeToggleDrag);
+            document.removeEventListener('mouseup', stopThemeToggleDrag);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化主题（从localStorage读取，保持页面间一致性）
+        const savedTheme = localStorage.getItem('theme') || 'cyber';
+        setTheme(savedTheme);
+        
+        // 设置主题切换按钮事件
+        document.getElementById('themeWorkspace').addEventListener('click', () => setTheme('workspace'));
+        document.getElementById('themeCyber').addEventListener('click', () => setTheme('cyber'));
+        document.getElementById('themeNature').addEventListener('click', () => setTheme('nature'));
+        
+        // 初始化主题切换组件拖拽
+        initThemeToggleDrag();
+        
+        // 渲染博客列表
+        renderFilters();
+        renderBlogList();
+    });
+</script>
+</body>
+</html>
