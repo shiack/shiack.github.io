@@ -462,17 +462,11 @@ class MusicPlayer {
     pause() {
         this.audioPlayer.pause();
         this.isPlaying = false;
-        // 先移除playing类（停止旋转动画），等待一帧后再更新图标
         const toggleBtn = document.getElementById('musicToggle');
+        toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
         toggleBtn.classList.remove('playing');
-        
-        // 使用 requestAnimationFrame 避免动画回正的视觉效果
-        requestAnimationFrame(() => {
-            toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-        });
-        
         document.getElementById('musicPlayingIndicator').classList.remove('playing');
-        this.savePlaybackState(); // 保存播放状态
+        this.savePlaybackState();
     }
 
     // 上一首

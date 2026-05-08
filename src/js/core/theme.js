@@ -5,14 +5,12 @@
 
 const VALID_THEMES = ['workspace', 'cyber', 'nature'];
 
-// Avatar icon per theme — swapped whenever the theme changes
 const AVATAR_ICONS = {
     workspace: '💻',
     nature:    '🌿',
 };
 
 // Hexagonal SVG avatar for cyber theme
-// Regular hexagon (pointy-top), r=54, center (60,60); outer rotating ring r=57
 const CYBER_AVATAR_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
   <defs>
     <radialGradient id="cyAvGrd" cx="38%" cy="32%" r="62%">
@@ -78,45 +76,6 @@ export function initTheme() {
     applyTheme(saved);
     _bindButtons();
     _bindDrag();
-}
-
-function _bindButtons() {
-    document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
-        btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
-    });
-}
-
-function _bindDrag() {
-    const toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    let dragging = false, ox = 0, oy = 0;
-
-    toggle.addEventListener('mousedown', e => {
-        if (e.target.classList.contains('theme-btn')) return;
-        dragging = true;
-        toggle.classList.add('dragging');
-        const r = toggle.getBoundingClientRect();
-        ox = e.clientX - r.left;
-        oy = e.clientY - r.top;
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onUp);
-    });
-
-    function onMove(e) {
-        if (!dragging) return;
-        const maxX = window.innerWidth  - toggle.offsetWidth  - 10;
-        const maxY = window.innerHeight - toggle.offsetHeight - 10;
-        toggle.style.left  = `${Math.max(10, Math.min(maxX, e.clientX - ox))}px`;
-        toggle.style.top   = `${Math.max(10, Math.min(maxY, e.clientY - oy))}px`;
-        toggle.style.right = 'auto';
-    }
-
-    function onUp() {
-        dragging = false;
-        toggle.classList.remove('dragging');
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-    }
 }
 
 function _bindButtons() {

@@ -143,16 +143,9 @@
 }
 
 .music-btn-play.playing {
-    animation: spin 3s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    border-color: var(--primary-color);
+    box-shadow: 0 0 12px var(--primary-color);
+    background: rgba(0, 255, 204, 0.12);
 }
 
 /* 音乐信息 */
