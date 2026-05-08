@@ -309,7 +309,7 @@
     }
     .theme-workspace .markdown-content { color: #111827; }
     /* pre code in workspace: dark bg needs light text, override cyber.css monochrome */
-    .theme-workspace .markdown-content pre code { color: #D4D4D4; }
+    .theme-workspace .markdown-content pre code { color: #FFFFFF; }
     .theme-workspace .markdown-content h1,
     .theme-workspace .markdown-content h2 {
         color: #1D4ED8;
@@ -390,7 +390,7 @@
         font-family: 'Georgia', 'Noto Serif SC', serif;
     }
     .theme-nature .markdown-content { color: #2D2517; }
-    .theme-nature .markdown-content pre code { color: #D4D4D4; }
+    .theme-nature .markdown-content pre code { color: #FFFFFF; }
     .theme-nature .markdown-content h1,
     .theme-nature .markdown-content h2 {
         color: #2A3626;
@@ -450,6 +450,24 @@
         color: #2A3626;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(61,78,54,.1);
+    }
+
+    /* cyber pre code also explicit white */
+    .theme-cyber .markdown-content pre code { color: #FFFFFF; }
+
+    /* ── Hero mini-tags: subtle white highlight on hover (all themes have dark hero bg) ── */
+    .blog-meta-detail .mini-tag {
+        color: rgba(255,255,255,0.72);
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.2);
+        box-shadow: none;
+    }
+    .blog-meta-detail .mini-tag:hover {
+        color: #FFFFFF;
+        background: rgba(255,255,255,0.16);
+        border-color: rgba(255,255,255,0.55);
+        box-shadow: none;
+        transform: translateY(-1px);
     }
 
     /* ── Sidebar TOC ── */

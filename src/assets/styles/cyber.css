@@ -583,6 +583,14 @@
     position: relative;
 }
 
+/* </> text needs tighter sizing to fit the 40px button */
+.theme-btn[data-theme="workspace"] {
+    font-size: 0.72rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
 .theme-btn.workspace::after {
     content: '';
     position: absolute;
@@ -1619,52 +1627,47 @@ body::after {
 }
 
 /* ──────────────────────────────────────────────────────────
-   WORKSPACE — rounded square, professional rotating dash ring
+   WORKSPACE — SVG hex avatar (blue); matches cyber design language
    ────────────────────────────────────────────────────────── */
 .theme-workspace .avatar {
-    border-radius: 20px;
-    border: 2px solid rgba(100, 116, 139, 0.25);
-    background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.08),
-        0 1px  4px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    clip-path: none;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    filter:
+        drop-shadow(0 0  5px #3B82F6)
+        drop-shadow(0 0 16px rgba(59, 130, 246, 0.38));
+    animation: float 6s ease-in-out infinite, workspace-avatar-flicker 14s infinite;
 }
 
-/* rotating dashed outer ring */
-.theme-workspace .avatar::before {
-    content: '';
-    position: absolute;
-    inset: -9px;
-    border-radius: 27px;
-    border: 2px dashed rgba(29, 78, 216, 0.3);
-    background: none;
-    -webkit-mask: none;
-    mask: none;
-    animation: workspace-ring-rotate 18s linear infinite;
-}
-
-/* subtle inner shimmer — override holo-shimmer green */
-.theme-workspace .avatar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.6) 0%, transparent 60%);
-    animation: none;
-    pointer-events: none;
-}
+.theme-workspace .avatar::before,
+.theme-workspace .avatar::after { content: none; }
 
 .theme-workspace .avatar:hover {
-    transform: translateY(-5px) scale(1.04);
-    box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    filter:
+        drop-shadow(0 0  9px #3B82F6)
+        drop-shadow(0 0 24px rgba(59, 130, 246, 0.6));
+    transform: scale(1.06);
 }
 
-@keyframes workspace-ring-rotate {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+@keyframes workspace-avatar-flicker {
+    0%, 90%, 100% {
+        filter: drop-shadow(0 0 5px #3B82F6) drop-shadow(0 0 16px rgba(59,130,246,.38));
+    }
+    91% {
+        filter: drop-shadow(0 0 3px #7C3AED) drop-shadow(0 0 12px rgba(124,58,237,.5)) brightness(1.2);
+    }
+    92% {
+        filter: drop-shadow(0 0 9px #3B82F6) drop-shadow(0 0 20px rgba(59,130,246,.65)) brightness(1.45);
+    }
+    93% {
+        filter: drop-shadow(0 0 2px #3B82F6) drop-shadow(0 0  6px rgba(59,130,246,.18)) brightness(0.72);
+    }
+    94% {
+        filter: drop-shadow(0 0 5px #3B82F6) drop-shadow(0 0 16px rgba(59,130,246,.38));
+    }
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -1716,66 +1719,34 @@ body::after {
 }
 
 /* ──────────────────────────────────────────────────────────
-   NATURE — circle, breathing animation, warm-light glow
+   NATURE — SVG hex avatar (green leaf); organic breathing feel
    ────────────────────────────────────────────────────────── */
 .theme-nature .avatar {
-    border-radius: 50%;
-    border: 2px solid rgba(61, 78, 54, 0.22);
-    background: linear-gradient(135deg, #f7f2ea 0%, #ede5d5 100%);
-    box-shadow:
-        0 4px 18px rgba(61, 78, 54, 0.13),
-        0 0 0  6px rgba(156, 175, 136, 0.14),
-        0 0 0 12px rgba(156, 175, 136, 0.06);
-    /* replace float with breathing — calmer, organic */
+    clip-path: none;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    filter:
+        drop-shadow(0 0  5px #7CB87C)
+        drop-shadow(0 0 16px rgba(124, 184, 124, 0.38));
     animation: nature-breathe 5s ease-in-out infinite;
 }
 
-/* slow-orbit dashed ring */
-.theme-nature .avatar::before {
-    content: '';
-    position: absolute;
-    inset: -12px;
-    border-radius: 50%;
-    border: 1.5px dashed rgba(61, 78, 54, 0.22);
-    background: none;
-    -webkit-mask: none;
-    mask: none;
-    animation: nature-orbit 24s linear infinite;
-}
-
-/* warm highlight — replaces holo green shimmer */
-.theme-nature .avatar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, rgba(255, 248, 215, 0.45) 0%, transparent 58%);
-    animation: nature-warm-pulse 5s ease-in-out infinite;
-    pointer-events: none;
-}
+.theme-nature .avatar::before,
+.theme-nature .avatar::after { content: none; }
 
 .theme-nature .avatar:hover {
+    filter:
+        drop-shadow(0 0  9px #7CB87C)
+        drop-shadow(0 0 24px rgba(124, 184, 124, 0.6));
     transform: scale(1.06);
-    box-shadow:
-        0 8px 28px rgba(61, 78, 54, 0.2),
-        0 0 0  9px rgba(156, 175, 136, 0.22),
-        0 0 0 18px rgba(156, 175, 136, 0.06);
 }
 
 @keyframes nature-breathe {
-    0%, 100% {
-        transform: scale(1) translateY(0);
-        box-shadow: 0 4px 18px rgba(61,78,54,.13), 0 0 0 6px rgba(156,175,136,.14), 0 0 0 12px rgba(156,175,136,.06);
-    }
-    50% {
-        transform: scale(1.04) translateY(-6px);
-        box-shadow: 0 8px 26px rgba(61,78,54,.18), 0 0 0 9px rgba(156,175,136,.18), 0 0 0 18px rgba(156,175,136,.04);
-    }
-}
-
-@keyframes nature-orbit {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    0%, 100% { transform: scale(1)    translateY(0);   }
+    50%       { transform: scale(1.04) translateY(-6px); }
 }
 
 @keyframes nature-warm-pulse {
