@@ -10,92 +10,459 @@
     <script src="/src/js/modules/blog-data.js"></script>
     <script src="/src/js/modules/music-config.js"></script>
     <link rel="stylesheet" href="/src/components/music-player/music-player.css">
-    <!-- Syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
-        .article-layout {
-            display: grid;
-            grid-template-columns: 1fr 260px;
-            gap: 1.5rem;
-            align-items: start;
-        }
-        @media (max-width: 900px) { .article-layout { grid-template-columns: 1fr; } }
-        .article-main { min-width: 0; }
-        .article-sidebar { position: sticky; top: 1.5rem; }
-        .blog-title-detail {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: .5rem;
-            line-height: 1.35;
-        }
-        .blog-meta-detail {
-            color: var(--text-muted);
-            font-size: .82rem;
-            margin-bottom: 1rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: .85rem;
-            transition: color .18s;
-        }
-        .back-link:hover { color: var(--secondary-color); }
-        .markdown-content { line-height: 1.75; color: var(--text-color); }
-        .markdown-content h1,.markdown-content h2 {
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: .3rem;
-            margin: 1.5rem 0 .75rem;
-        }
-        .markdown-content h3,.markdown-content h4 {
-            color: var(--text-color);
-            margin: 1.2rem 0 .5rem;
-        }
-        .markdown-content pre {
-            background: rgba(0,0,0,.45);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-        .markdown-content code:not(pre code) {
-            background: rgba(0,255,204,.08);
-            color: var(--primary-color);
-            padding: .1em .4em;
-            border-radius: 3px;
-            font-size: .88em;
-        }
-        .markdown-content blockquote {
-            border-left: 3px solid var(--primary-color);
-            padding: .5rem 1rem;
-            margin: 1rem 0;
-            background: rgba(0,255,204,.04);
-            color: var(--text-secondary);
-        }
-        .markdown-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        .markdown-content th, .markdown-content td {
-            border: 1px solid var(--border-color);
-            padding: .5rem .75rem;
-            text-align: left;
-        }
-        .markdown-content th { background: rgba(0,255,204,.08); color: var(--primary-color); }
-        .related-posts { display: flex; flex-direction: column; gap: .5rem; margin-top: .75rem; }
-        .related-item {
-            display: block;
-            padding: .5rem .75rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: .85rem;
-            transition: all .18s;
-        }
-        .related-item:hover { border-color: var(--primary-color); color: var(--primary-color); }
+    /* ── Layout ── */
+    .article-layout {
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+    @media (max-width: 900px) { .article-layout { grid-template-columns: 1fr; } }
+    .article-main { min-width: 0; }
+    .article-sidebar { position: sticky; top: 1.5rem; }
+
+    /* ── Article card: strip default padding, let hero/body control it ── */
+    .article-card {
+        padding: 0 !important;
+        overflow: hidden;
+    }
+    .article-card:hover { transform: none !important; }
+
+    /* ── HERO SECTION ── */
+    .article-hero {
+        padding: 2rem 2.5rem 1.75rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .article-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+    }
+    .article-hero > * { position: relative; z-index: 1; }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        margin-bottom: 1.25rem;
+        font-size: .82rem;
+        font-weight: 500;
+        text-decoration: none;
+        letter-spacing: .03em;
+        transition: opacity .18s, transform .18s;
+        opacity: .75;
+        border: 1px solid transparent;
+        padding: .25rem .65rem;
+        border-radius: 20px;
+    }
+    .back-link:hover { opacity: 1; transform: translateX(-3px); }
+
+    .blog-title-detail {
+        font-size: clamp(1.35rem, 3vw, 1.75rem);
+        font-weight: 800;
+        line-height: 1.3;
+        margin-bottom: .75rem;
+        letter-spacing: -.01em;
+    }
+    .blog-meta-detail {
+        font-size: .82rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: .5rem;
+        opacity: .8;
+    }
+
+    /* ── BODY SECTION ── */
+    .article-body {
+        padding: 2.25rem 2.5rem 2.5rem;
+    }
+    @media (max-width: 640px) {
+        .article-hero { padding: 1.5rem 1.25rem 1.25rem; }
+        .article-body  { padding: 1.5rem 1.25rem; }
+    }
+
+    /* ── MARKDOWN TYPOGRAPHY ── */
+    .markdown-content {
+        line-height: 1.82;
+        font-size: 1rem;
+    }
+    .markdown-content > p:first-of-type {
+        font-size: 1.06rem;
+        line-height: 1.9;
+    }
+    .markdown-content p { margin: .9rem 0; }
+    .markdown-content h1 { font-size: 1.55rem; margin: 2.2rem 0 1rem; }
+    .markdown-content h2 { font-size: 1.3rem;  margin: 2rem 0 .8rem; }
+    .markdown-content h3 { font-size: 1.1rem;  margin: 1.6rem 0 .6rem; }
+    .markdown-content h4 { font-size: 1rem;    margin: 1.2rem 0 .5rem; }
+    .markdown-content h1, .markdown-content h2 {
+        padding-bottom: .45rem;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+    .markdown-content ul, .markdown-content ol {
+        padding-left: 1.5rem;
+        margin: .8rem 0;
+    }
+    .markdown-content li { margin: .35rem 0; }
+    .markdown-content a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    .markdown-content img { max-width: 100%; border-radius: 8px; display: block; margin: 1.2rem auto; }
+    .markdown-content hr { border: none; border-top: 1px solid; margin: 2rem 0; opacity: .25; }
+
+    /* Code blocks */
+    .markdown-content pre {
+        border-radius: 8px;
+        padding: 1.1rem 1.25rem;
+        overflow-x: auto;
+        margin: 1.25rem 0;
+        font-size: .87rem;
+        line-height: 1.65;
+        position: relative;
+    }
+    .markdown-content pre::before {
+        content: attr(data-lang);
+        position: absolute;
+        top: .45rem;
+        right: .8rem;
+        font-size: .68rem;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        opacity: .45;
+        font-family: monospace;
+    }
+    .markdown-content code:not(pre code) {
+        padding: .15em .45em;
+        border-radius: 4px;
+        font-size: .87em;
+        font-weight: 500;
+    }
+
+    /* Blockquote */
+    .markdown-content blockquote {
+        margin: 1.4rem 0;
+        padding: 1rem 1.25rem 1rem 1.5rem;
+        border-left-width: 3px;
+        border-left-style: solid;
+        border-radius: 0 8px 8px 0;
+        position: relative;
+    }
+    .markdown-content blockquote::before {
+        content: '\201C';
+        position: absolute;
+        top: -.15rem;
+        left: .75rem;
+        font-size: 2.4rem;
+        line-height: 1;
+        opacity: .18;
+        font-family: Georgia, serif;
+    }
+    .markdown-content blockquote p { margin: 0; }
+
+    /* Tables */
+    .markdown-content table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: .92rem; }
+    .markdown-content th, .markdown-content td {
+        padding: .55rem .85rem;
+        text-align: left;
+        border-width: 1px;
+        border-style: solid;
+    }
+    .markdown-content thead tr { }
+    .markdown-content tbody tr:nth-child(even) { }
+
+    /* ── Related posts ── */
+    .article-footer { margin-top: 2.5rem; }
+    .related-title {
+        font-size: .88rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        margin-bottom: .85rem;
+    }
+    .related-posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .6rem; }
+    .related-item {
+        display: block;
+        padding: .65rem .9rem;
+        border-radius: 8px;
+        border-width: 1px;
+        border-style: solid;
+        font-size: .83rem;
+        text-decoration: none;
+        line-height: 1.4;
+        transition: all .18s;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       CYBER THEME
+    ═══════════════════════════════════════════════════ */
+    .theme-cyber .article-hero {
+        background: linear-gradient(135deg, #020810 0%, #040F1F 45%, #030C18 100%);
+        border-bottom: 1px solid rgba(0,255,204,.18);
+    }
+    .theme-cyber .back-link {
+        color: rgba(0,255,204,.7);
+        border-color: rgba(0,255,204,.2);
+        background: rgba(0,255,204,.04);
+    }
+    .theme-cyber .back-link:hover { border-color: rgba(0,255,204,.5); color: #00FFCC; }
+    .theme-cyber .blog-title-detail { color: #FFFFFF; }
+    .theme-cyber .blog-meta-detail  { color: rgba(203,213,225,.7); }
+
+    .theme-cyber .article-body {
+        background: #F7FAFD;
+        color: #111827;
+    }
+    /* Override cyber.css global .markdown-content { color: var(--text-color) } */
+    .theme-cyber .markdown-content { color: #111827; }
+    .theme-cyber .markdown-content h1,
+    .theme-cyber .markdown-content h2 {
+        color: #0A2540;
+        border-bottom-color: rgba(0,200,170,.25);
+        border-left: none;
+        padding-left: 0;
+        position: relative;
+    }
+    .theme-cyber .markdown-content h1::after,
+    .theme-cyber .markdown-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0;
+        width: 2.5rem; height: 2px;
+        background: #00FFCC;
+        border-radius: 2px;
+    }
+    .theme-cyber .markdown-content h3,
+    .theme-cyber .markdown-content h4 { color: #0D2137; }
+    .theme-cyber .markdown-content a  { color: #007A62; }
+    .theme-cyber .markdown-content code:not(pre code) {
+        background: rgba(0,255,204,.1);
+        color: #006B54;
+        border: 1px solid rgba(0,255,204,.2);
+    }
+    .theme-cyber .markdown-content pre {
+        background: #0D1117;
+        border: 1px solid rgba(0,255,204,.15);
+        border-left: 3px solid #00FFCC;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .theme-cyber .markdown-content pre::before { color: #00FFCC; opacity: .5; }
+    .theme-cyber .markdown-content blockquote {
+        background: rgba(0,255,204,.04);
+        border-left-color: #00FFCC;
+        color: #1e3a32;
+    }
+    .theme-cyber .markdown-content table { border-color: rgba(0,200,170,.2); }
+    .theme-cyber .markdown-content th {
+        background: rgba(0,255,204,.07);
+        color: #004A3A;
+        border-color: rgba(0,200,170,.2);
+    }
+    .theme-cyber .markdown-content td { border-color: rgba(0,200,170,.12); }
+    .theme-cyber .markdown-content tbody tr:nth-child(even) { background: rgba(0,255,204,.025); }
+    .theme-cyber .markdown-content hr { border-top-color: #00FFCC; }
+    .theme-cyber .related-title { color: rgba(0,255,204,.55); }
+    .theme-cyber .related-item {
+        background: rgba(0,255,204,.03);
+        border-color: rgba(0,255,204,.15);
+        color: #1a3a30;
+    }
+    .theme-cyber .related-item:hover {
+        border-color: rgba(0,255,204,.5);
+        background: rgba(0,255,204,.07);
+        color: #003D2E;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,255,204,.1);
+    }
+
+    /* Cyber sidebar */
+    .theme-cyber .article-sidebar .cyber-card {
+        background: rgba(4,10,20,.96);
+        border-color: rgba(0,255,204,.2);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       WORKSPACE THEME
+    ═══════════════════════════════════════════════════ */
+    .theme-workspace .article-hero {
+        background: linear-gradient(135deg, #1E3A5F 0%, #1D4ED8 60%, #1e40af 100%);
+    }
+    .theme-workspace .back-link {
+        color: rgba(255,255,255,.8);
+        border-color: rgba(255,255,255,.25);
+        background: rgba(255,255,255,.1);
+    }
+    .theme-workspace .back-link:hover { color: #fff; border-color: rgba(255,255,255,.6); }
+    .theme-workspace .blog-title-detail { color: #FFFFFF; }
+    .theme-workspace .blog-meta-detail  { color: rgba(255,255,255,.72); }
+
+    .theme-workspace .article-body {
+        background: #FFFFFF;
+        color: #111827;
+    }
+    .theme-workspace .markdown-content { color: #111827; }
+    /* pre code in workspace: dark bg needs light text, override cyber.css monochrome */
+    .theme-workspace .markdown-content pre code { color: #D4D4D4; }
+    .theme-workspace .markdown-content h1,
+    .theme-workspace .markdown-content h2 {
+        color: #1D4ED8;
+        border-bottom-color: #E5E7EB;
+        border-left: none;
+        padding-left: 0;
+        position: relative;
+    }
+    .theme-workspace .markdown-content h1::after,
+    .theme-workspace .markdown-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0;
+        width: 2.5rem; height: 2px;
+        background: #2563EB;
+        border-radius: 2px;
+    }
+    .theme-workspace .markdown-content h3,
+    .theme-workspace .markdown-content h4 { color: #1e3a8a; }
+    .theme-workspace .markdown-content a  { color: #2563EB; }
+    .theme-workspace .markdown-content code:not(pre code) {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border: 1px solid #BFDBFE;
+    }
+    .theme-workspace .markdown-content pre {
+        background: #1E293B;
+        border: none;
+        border-left: 3px solid #2563EB;
+    }
+    .theme-workspace .markdown-content pre::before { color: #60A5FA; }
+    .theme-workspace .markdown-content blockquote {
+        background: #EFF6FF;
+        border-left-color: #2563EB;
+        color: #374151;
+    }
+    .theme-workspace .markdown-content table { border-color: #E5E7EB; }
+    .theme-workspace .markdown-content th {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border-color: #E5E7EB;
+    }
+    .theme-workspace .markdown-content td { border-color: #E5E7EB; }
+    .theme-workspace .markdown-content tbody tr:nth-child(even) { background: #F9FAFB; }
+    .theme-workspace .markdown-content hr { border-top-color: #1D4ED8; }
+    .theme-workspace .related-title { color: #6B7280; }
+    .theme-workspace .related-item {
+        background: #F9FAFB;
+        border-color: #E5E7EB;
+        color: #374151;
+    }
+    .theme-workspace .related-item:hover {
+        border-color: #2563EB;
+        background: #EFF6FF;
+        color: #1D4ED8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37,99,235,.1);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       NATURE THEME
+    ═══════════════════════════════════════════════════ */
+    .theme-nature .article-hero {
+        background: linear-gradient(135deg, #1E2B1A 0%, #3D4E36 55%, #2E3D28 100%);
+    }
+    .theme-nature .back-link {
+        color: rgba(200,220,180,.8);
+        border-color: rgba(200,220,180,.25);
+        background: rgba(200,220,180,.08);
+    }
+    .theme-nature .back-link:hover { color: #C8DCA0; border-color: rgba(200,220,180,.5); }
+    .theme-nature .blog-title-detail { color: #F0EDE5; }
+    .theme-nature .blog-meta-detail  { color: rgba(220,215,200,.72); }
+
+    .theme-nature .article-body {
+        background: #FDFCF8;
+        color: #2D2517;
+        font-family: 'Georgia', 'Noto Serif SC', serif;
+    }
+    .theme-nature .markdown-content { color: #2D2517; }
+    .theme-nature .markdown-content pre code { color: #D4D4D4; }
+    .theme-nature .markdown-content h1,
+    .theme-nature .markdown-content h2 {
+        color: #2A3626;
+        border-bottom-color: rgba(61,78,54,.18);
+        border-left: none;
+        padding-left: 0;
+        font-family: 'Georgia', 'Noto Serif SC', serif;
+        position: relative;
+    }
+    .theme-nature .markdown-content h1::after,
+    .theme-nature .markdown-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0;
+        width: 2.5rem; height: 2px;
+        background: #3D4E36;
+        border-radius: 2px;
+    }
+    .theme-nature .markdown-content h3,
+    .theme-nature .markdown-content h4 { color: #3D4E36; }
+    .theme-nature .markdown-content a  { color: #5C3D11; }
+    .theme-nature .markdown-content code:not(pre code) {
+        background: #F0EDE5;
+        color: #7B4E12;
+        border: 1px solid rgba(139,105,20,.2);
+    }
+    .theme-nature .markdown-content pre {
+        background: #2D2517;
+        border: none;
+        border-left: 3px solid #3D4E36;
+    }
+    .theme-nature .markdown-content pre::before { color: #9CAF88; }
+    .theme-nature .markdown-content blockquote {
+        background: #F5F0E6;
+        border-left-color: #3D4E36;
+        color: #4A3D2A;
+    }
+    .theme-nature .markdown-content blockquote::before { color: #3D4E36; opacity: .25; }
+    .theme-nature .markdown-content table { border-color: rgba(61,78,54,.18); }
+    .theme-nature .markdown-content th {
+        background: rgba(61,78,54,.07);
+        color: #2A3626;
+        border-color: rgba(61,78,54,.18);
+    }
+    .theme-nature .markdown-content td { border-color: rgba(61,78,54,.1); }
+    .theme-nature .markdown-content tbody tr:nth-child(even) { background: rgba(61,78,54,.025); }
+    .theme-nature .markdown-content hr { border-top-color: #3D4E36; }
+    .theme-nature .related-title { color: #8A9A85; }
+    .theme-nature .related-item {
+        background: #F5F0E6;
+        border-color: rgba(61,78,54,.18);
+        color: #4A3D2A;
+    }
+    .theme-nature .related-item:hover {
+        border-color: #3D4E36;
+        background: #ECE7DA;
+        color: #2A3626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(61,78,54,.1);
+    }
+
+    /* ── Sidebar TOC ── */
+    .toc-header {
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        margin-bottom: .75rem;
+        padding-bottom: .5rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--primary-color);
+    }
     </style>
 </head>
 <body class="theme-cyber">
@@ -107,26 +474,37 @@
 
         <div class="article-layout">
             <div class="article-main">
-                <div class="cyber-card reveal neon-lift" style="animation-delay:.1s">
-                    <a href="/src/pages/blogs/blog-list.html" class="back-link">← 返回博客列表 / Back to list</a>
-                    <h1 id="blogTitle" class="blog-title-detail"></h1>
-                    <div id="blogMeta" class="blog-meta-detail"></div>
-                    <hr style="border-color:var(--border-color);margin:1rem 0">
-                    <div class="markdown-content" id="markdownContent">
-                        <div class="skeleton-card" style="height:400px"></div>
+                <div class="cyber-card article-card reveal" style="animation-delay:.1s">
+
+                    <!-- Hero: back link + title + meta -->
+                    <div class="article-hero">
+                        <a href="/src/pages/blogs/blog-list.html" class="back-link">← 返回博客列表</a>
+                        <h1 id="blogTitle" class="blog-title-detail"></h1>
+                        <div id="blogMeta" class="blog-meta-detail"></div>
                     </div>
-                    <hr style="border-color:var(--border-color);margin:1.5rem 0">
-                    <h3 style="color:var(--primary-color);margin-bottom:.5rem">📁 相关文章 / Related</h3>
-                    <div class="related-posts" id="relatedPosts"></div>
+
+                    <!-- Body: markdown content + related -->
+                    <div class="article-body">
+                        <div class="markdown-content" id="markdownContent">
+                            <div class="skeleton-card" style="height:420px"></div>
+                        </div>
+                        <div class="article-footer">
+                            <div class="related-title">相关文章 / Related</div>
+                            <div class="related-posts" id="relatedPosts"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <div class="article-sidebar">
-                <div id="toc-container" class="cyber-card reveal" style="animation-delay:.25s; padding:.75rem 1rem; min-height:60px"></div>
+                <div id="toc-container" class="cyber-card reveal" style="animation-delay:.25s; padding:.9rem 1.1rem; min-height:60px">
+                    <div class="toc-header">目录 · Contents</div>
+                </div>
             </div>
         </div>
 
-        <footer class="reveal" style="animation-delay:.5s">✦ 赛博边界 · Markdown Viewer ✦</footer>
+        <footer class="reveal" style="animation-delay:.5s">✦ shiack · 博客 ✦</footer>
     </div>
 
     <script src="/src/components/music-player/music-player.js"></script>
@@ -140,7 +518,6 @@
                  renderMarkdownText, enhanceContent,
                  extractTitle }                     from '/src/js/core/markdown-renderer.js';
 
-        // ── Boot ──────────────────────────────────────────────────────────
         injectThemeToggle();
         initTheme();
         mountNav('blog');
@@ -152,7 +529,6 @@
         document.getElementById('musicPlayerContainer').innerHTML = musicPlayer.playerHTML;
         musicPlayer.init();
 
-        // ── Render article ────────────────────────────────────────────────
         async function renderArticle() {
             const params  = new URLSearchParams(window.location.search);
             const file    = params.get('file');
@@ -180,24 +556,28 @@
                 return;
             }
 
-            // Render
             document.getElementById('markdownContent').innerHTML = renderMarkdownText(markdown);
             if (typeof hljs !== 'undefined') {
-                document.querySelectorAll('pre code').forEach(b => hljs.highlightElement(b));
+                document.querySelectorAll('pre code').forEach(b => {
+                    hljs.highlightElement(b);
+                    // propagate language to pre for the ::before label
+                    const lang = b.className.match(/language-(\w+)/)?.[1];
+                    if (lang) b.closest('pre')?.setAttribute('data-lang', lang);
+                });
             }
             enhanceContent(document.getElementById('markdownContent'));
 
-            // Title & meta
             const title = extractTitle(markdown);
             document.getElementById('blogTitle').textContent = title || (file || localId || '').replace(/\.md$/, '');
             document.title = `${document.getElementById('blogTitle').textContent} | shiack`;
 
-            const post  = typeof BLOG_POSTS !== 'undefined'
+            const post = typeof BLOG_POSTS !== 'undefined'
                 ? BLOG_POSTS.find(p => file && file.includes(p.id))
                 : null;
             const metaEl = document.getElementById('blogMeta');
             metaEl.innerHTML = post
-                ? `🗓️ ${post.date} &nbsp;·&nbsp; 🏷️ ${post.tags.map(t => `<span class="mini-tag">#${escapeHtml(t)}</span>`).join(' ')}`
+                ? `🗓️ ${post.date} &nbsp;·&nbsp; 🏷️ ${post.tags.map(t =>
+                    `<span class="mini-tag">#${escapeHtml(t)}</span>`).join(' ')}`
                 : `📅 ${new Date().toLocaleDateString('zh-CN')} &nbsp;·&nbsp; ${sourceLabel}`;
 
             renderRelated(file || localId);
@@ -206,7 +586,7 @@
         function renderRelated(currentRef) {
             const container = document.getElementById('relatedPosts');
             if (typeof BLOG_POSTS === 'undefined') return;
-            const pool    = BLOG_POSTS
+            const pool = BLOG_POSTS
                 .filter(p => !currentRef || !currentRef.includes(p.id))
                 .sort(() => 0.5 - Math.random())
                 .slice(0, 4);
