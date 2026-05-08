@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS · AI 内容管理 | shiack</title>
+    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
+    <link rel="stylesheet" href="/src/assets/styles/effects.css">
+    <script src="/src/js/modules/blog-data.js"></script>
+    <script src="/src/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+    <style>
+        /* ── Schedule bar ─────────────────────────────────────────── */
+        .schedule-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .75rem;
+            margin: 1.25rem 0 .5rem;
+        }
+        .schedule-slot {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: .85rem 1rem;
+            text-align: center;
+            transition: border-color .2s, box-shadow .2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .schedule-slot::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(0,255,204,.04));
+            pointer-events: none;
+        }
+        .schedule-slot.s-done    { border-color: var(--primary-color); }
+        .schedule-slot.s-next    { border-color: var(--accent-color); animation: border-pulse 2s ease infinite; }
+        .schedule-slot.s-pending { opacity: .65; }
+        .slot-time {
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: monospace;
+            color: var(--primary-color);
+            letter-spacing: .04em;
+        }
+        .schedule-slot.s-pending .slot-time { color: var(--text-muted); }
+        .schedule-slot.s-next    .slot-time { color: var(--accent-color); }
+        .slot-label {
+            font-size: .72rem;
+            color: var(--text-muted);
+            margin: .2rem 0 .45rem;
+            letter-spacing: .04em;
+        }
+        .slot-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+        .s-done    .slot-badge { background: rgba(0,255,204,.12); color: var(--primary-color); }
+        .s-next    .slot-badge { background: rgba(168,85,247,.15); color: var(--accent-color); }
+        .s-pending .slot-badge { background: rgba(255,255,255,.04); color: var(--text-muted); }
+        .slot-preview {
+            margin-top: .35rem;
+            font-size: .7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ── Countdown ────────────────────────────────────────────── */
+        .countdown-line {
+            text-align: center;
+            font-size: .8rem;
+            color: var(--text-muted);
+            font-family: monospace;
+            letter-spacing: .05em;
+            padding: .5rem 0 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.25rem;
+        }
+        .countdown-line em {
+            font-style: normal;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* ── Lang toggle ──────────────────────────────────────────── */
+        .lang-toggle {
+            display: flex;
+            gap: .3rem;
+            margin-left: auto;
+        }
+        .lang-btn {
+            padding: 3px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: .78rem;
+            transition: all .18s;
+            line-height: 1.6;
+        }
+        .lang-btn.active,
+        .lang-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(0,255,204,.07);
+        }
+
+        /* ── Heading row ──────────────────────────────────────────── */
+        .cms-heading-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .cms-heading-row h2 { margin: 0; flex: 1 1 auto; }
+
+        /* ── Sub-heading separator ────────────────────────────────── */
+        .sub-heading {
+            font-size: .8rem;
+            color: var(--text-muted);
+            opacity: .7;
+            user-select: none;
+            margin-bottom: .5rem;
+        }
+
+        /* ── CMS article card "read more" ─────────────────────────── */
+        .cms-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: .75rem;
+        }
+    </style>
+</head>
+<body class="theme-cyber">
+    <canvas id="particles-canvas" class="particles-canvas"></canvas>
+    <div id="musicPlayerContainer"></div>
+
+    <div class="container">
+        <div id="site-nav"></div>
+
+        <!-- ── Single main card, mirrors blog-list layout ── -->
+        <div class="cyber-card reveal neon-lift" style="animation-delay:.15s">
+
+            <!-- heading row: title + lang toggle -->
+            <div class="cms-heading-row">
+                <h2 class="glitch" data-text="⊕ CMS · AI 内容管理系统">⊕ CMS · AI 内容管理系统</h2>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" data-lang="zh">🇨🇳 中文</button>
+                    <button class="lang-btn"         data-lang="en">🇺🇸 EN</button>
+                </div>
+            </div>
+
+            <!-- today's 3-slot schedule bar -->
+            <div class="schedule-bar" id="scheduleBar">
+                <!-- injected by JS -->
+            </div>
+
+            <!-- live countdown -->
+            <div class="countdown-line" id="countdownLine">计算中…</div>
+
+            <!-- ── filters (same pattern as blog-list tag-cloud) ── -->
+            <div class="sub-heading" id="filterLabel">🏷️ 分类 / Category：</div>
+            <div class="tag-cloud" id="categoryCloud" style="margin-bottom:.75rem"></div>
+
+            <div class="sub-heading" id="dateLabel">📅 日期 / Date：</div>
+            <div class="tag-cloud" id="dateCloud" style="margin-bottom:1.25rem"></div>
+
+            <!-- ── article grid — same .blog-grid class as blog-list ── -->
+            <div class="blog-grid" id="cms-grid">
+                <!-- skeleton while loading -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+
+            <!-- empty state (hidden until needed) -->
+            <div class="empty-state" id="cms-empty" style="display:none">
+                📭 暂无文章 / No articles yet.<br>
+                <span style="font-size:.82rem">CMS 系统将在下次调度时自动生成内容。</span>
+            </div>
+
+        </div>
+
+        <footer class="reveal" style="animation-delay:.5s">✦ shiack · CMS 系统 | Powered by Claude AI ✦</footer>
+    </div>
+
+    <script src="/src/components/music-player/music-player.js"></script>
+    <script type="module">
+        import { injectThemeToggle, initTheme }   from '/src/js/core/theme.js';
+        import { mountNav }                       from '/src/js/core/nav.js';
+        import { escapeHtml, showToast }          from '/src/js/core/utils.js';
+        import { initParticles, initScrollReveal,
+                 initCardTilt, initGlitchText,
+                 initScanLine }                   from '/src/js/core/effects.js';
+
+        // ── Boot ──────────────────────────────────────────────────────────
+        injectThemeToggle();
+        initTheme();
+        mountNav('cms');
+        initParticles('particles-canvas');
+        initScanLine();
+
+        const musicPlayer = new MusicPlayer();
+        document.getElementById('musicPlayerContainer').innerHTML = musicPlayer.playerHTML;
+        musicPlayer.init();
+
+        // ── Constants ─────────────────────────────────────────────────────
+        const SLOTS = [
+            { time: '09:00', label: { zh: '晨间技术', en: 'Morning Tech'  }, cat: 'ai'       },
+            { time: '13:00', label: { zh: '午间精选', en: 'Midday Select'  }, cat: 'frontend' },
+            { time: '18:00', label: { zh: '晚间深度', en: 'Evening Deep'   }, cat: 'backend'  },
+        ];
+        const BADGE = {
+            done:    { zh: '✅ 已生成', en: '✅ Done'     },
+            next:    { zh: '⏳ 即将',  en: '⏳ Next'     },
+            pending: { zh: '⏸ 待生成', en: '⏸ Pending'  },
+        };
+
+        // ── State ─────────────────────────────────────────────────────────
+        let lang        = 'zh';
+        let activeDate  = todayStr();
+        let activeCat   = null;
+        let articles    = [];
+
+        function todayStr() { return new Date().toISOString().slice(0, 10); }
+        function nowHHMM()  {
+            const n = new Date();
+            return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+        }
+
+        // ── Language toggle ───────────────────────────────────────────────
+        document.querySelectorAll('.lang-btn').forEach(btn =>
+            btn.addEventListener('click', () => {
+                lang = btn.dataset.lang;
+                document.querySelectorAll('.lang-btn').forEach(b =>
+                    b.classList.toggle('active', b.dataset.lang === lang));
+                renderScheduleBar();
+                renderFilters();
+                renderGrid();
+            })
+        );
+
+        // ── Schedule bar ──────────────────────────────────────────────────
+        function slotState(slot) {
+            const hhmm      = nowHHMM();
+            const todayArts = articles.filter(a => a.date === todayStr() && a.slot === slot.time);
+            if (todayArts.length) return { state: 'done', art: todayArts[0] };
+            const nextIdx   = SLOTS.findIndex(s => s.time > hhmm);
+            if (SLOTS[nextIdx]?.time === slot.time) return { state: 'next', art: null };
+            return { state: 'pending', art: null };
+        }
+
+        function renderScheduleBar() {
+            document.getElementById('scheduleBar').innerHTML = SLOTS.map(slot => {
+                const { state, art } = slotState(slot);
+                const preview = art
+                    ? `<div class="slot-preview" title="${escapeHtml(art.title || '')}">${escapeHtml((art.title || '').slice(0, 28))}…</div>`
+                    : '';
+                return `
+                <div class="schedule-slot s-${state}">
+                    <div class="slot-time">${slot.time}</div>
+                    <div class="slot-label">${slot.label[lang]}</div>
+                    <span class="slot-badge">${BADGE[state][lang]}</span>
+                    ${preview}
+                </div>`;
+            }).join('');
+        }
+
+        // ── Countdown ─────────────────────────────────────────────────────
+        function updateCountdown() {
+            const hhmm  = nowHHMM();
+            const el    = document.getElementById('countdownLine');
+            const nxt   = SLOTS.find(s => s.time > hhmm);
+            if (!nxt) {
+                el.innerHTML = lang === 'zh'
+                    ? '今日所有时段已过 · 明日 <em>09:00</em> 重新开始'
+                    : 'All slots passed · Resumes <em>09:00</em> tomorrow';
+                return;
+            }
+            const [h, m] = nxt.time.split(':').map(Number);
+            const now    = new Date();
+            const next   = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+            const diff   = next - now;
+            const mm     = String(Math.floor(diff / 60000)).padStart(2, '0');
+            const ss     = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            el.innerHTML = lang === 'zh'
+                ? `距下次生成 <em>${nxt.time}</em> 还有 <em>${mm}:${ss}</em>`
+                : `Next generation at <em>${nxt.time}</em> in <em>${mm}:${ss}</em>`;
+        }
+        setInterval(() => { updateCountdown(); renderScheduleBar(); }, 1000);
+
+        // ── Load index ────────────────────────────────────────────────────
+        async function loadArticles() {
+            try {
+                const res = await fetch('/src/assets/posts/cms/cms-index.json');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                articles   = (data.articles || []).sort((a, b) =>
+                    new Date(b.generatedAt || b.date) - new Date(a.generatedAt || a.date));
+            } catch {
+                articles = [];
+            }
+            renderScheduleBar();
+            updateCountdown();
+            renderFilters();
+            renderGrid();
+        }
+
+        // ── Filters — identical pattern to blog-list tag-cloud ────────────
+        function renderFilters() {
+            // Category filter
+            const cats  = [...new Set(articles.map(a => a.category).filter(Boolean))];
+            const catEl = document.getElementById('categoryCloud');
+            document.getElementById('filterLabel').textContent =
+                lang === 'zh' ? '🏷️ 分类 / Category：' : '🏷️ Category：';
+            catEl.innerHTML =
+                `<span class="tag ${!activeCat ? 'active' : ''}" data-cat="">${lang === 'zh' ? '全部' : 'All'}</span>` +
+                cats.map(c =>
+                    `<span class="tag ${activeCat === c ? 'active' : ''}" data-cat="${escapeHtml(c)}">#${escapeHtml(c)}</span>`
+                ).join('');
+            catEl.querySelectorAll('[data-cat]').forEach(el =>
+                el.addEventListener('click', () => {
+                    activeCat = el.dataset.cat || null;
+                    renderFilters();
+                    renderGrid();
+                })
+            );
+
+            // Date filter
+            const dates  = [...new Set(articles.map(a => a.date))].sort().reverse().slice(0, 8);
+            const dateEl = document.getElementById('dateCloud');
+            document.getElementById('dateLabel').textContent =
+                lang === 'zh' ? '📅 日期 / Date：' : '📅 Date：';
+            dateEl.innerHTML =
+                `<span class="tag ${activeDate === 'all' ? 'active' : ''}" data-date="all">${lang === 'zh' ? '全部' : 'All'}</span>` +
+                dates.map(d =>
+                    `<span class="tag ${activeDate === d ? 'active' : ''}" data-date="${d}" style="font-family:monospace">${d}</span>`
+                ).join('');
+            dateEl.querySelectorAll('[data-date]').forEach(el =>
+                el.addEventListener('click', () => {
+                    activeDate = el.dataset.date;
+                    renderFilters();
+                    renderGrid();
+                })
+            );
+        }
+
+        // ── Article grid — same .blog-card markup as blog-list ────────────
+        function articleUrl(art) {
+            if (art.file) return `/src/pages/blogs/blog-detail.html?file=${encodeURIComponent(art.file)}`;
+            if (art.id)   return `/src/pages/blogs/blog-detail.html?localId=${encodeURIComponent(art.id)}`;
+            return '#';
+        }
+
+        function renderGrid() {
+            let filtered = articles;
+            if (activeDate && activeDate !== 'all') filtered = filtered.filter(a => a.date === activeDate);
+            if (activeCat) filtered = filtered.filter(a => a.category === activeCat);
+
+            const grid  = document.getElementById('cms-grid');
+            const empty = document.getElementById('cms-empty');
+
+            if (!filtered.length) {
+                grid.innerHTML  = '';
+                empty.style.display = '';
+                return;
+            }
+            empty.style.display = 'none';
+
+            const titleKey   = lang === 'en' ? 'titleEn'   : 'title';
+            const summaryKey = lang === 'en' ? 'summaryEn' : 'summary';
+
+            grid.innerHTML = filtered.map((art, i) => {
+                const title   = escapeHtml(art[titleKey]   || art.title   || '');
+                const summary = escapeHtml((art[summaryKey] || art.summary || '').slice(0, 130));
+                const url     = articleUrl(art);
+                const tags    = (art.tags || []).map(t => `<span class="mini-tag">#${escapeHtml(t)}</span>`).join('');
+                const slotLabel = SLOTS.find(s => s.time === art.slot)?.label[lang] || art.slot || '—';
+                const readMore  = lang === 'zh' ? '⟢ 阅读全文 ⟢' : '⟢ Read More ⟢';
+
+                return `
+                <div class="blog-card reveal" style="animation-delay:${i * 45}ms">
+                    <a href="${url}" class="blog-title-link">📄 ${title}</a>
+                    <div class="blog-meta">
+                        🗓️ ${art.date}
+                        &nbsp;·&nbsp; ⏰ ${slotLabel}
+                        &nbsp;·&nbsp; 🏷️ ${escapeHtml(art.category || '—')}
+                        ${art.lang ? `&nbsp;·&nbsp; 🌐 ${art.lang.toUpperCase()}` : ''}
+                    </div>
+                    <div class="blog-tags">${tags}</div>
+                    <p class="blog-summary">${summary}…</p>
+                    <div class="cms-card-footer">
+                        <a href="${url}" class="read-more">${readMore}</a>
+                    </div>
+                </div>`;
+            }).join('');
+
+            initScrollReveal('.reveal');
+            initCardTilt('.blog-card');
+        }
+
+        // ── Init ──────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', async () => {
+            initScrollReveal('.reveal');
+            initGlitchText('.glitch');
+            renderScheduleBar();
+            updateCountdown();
+            await loadArticles();
+        });
+    </script>
+</body>
+</html>

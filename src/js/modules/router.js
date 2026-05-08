@@ -27,6 +27,13 @@ export const ROUTES = {
         path: `${BASE_PATH}/src/pages/blogs/blog-detail.html`,
         name: '博客详情',
         title: '博客详情 | CyberBlog'
+    },
+
+    // CMS 内容管理页
+    cms: {
+        path: `${BASE_PATH}/src/pages/cms/cms.html`,
+        name: 'CMS',
+        title: 'CMS · 内容管理 | shiack'
     }
 };
 
