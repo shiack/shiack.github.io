@@ -5,6 +5,13 @@
 
 const VALID_THEMES = ['workspace', 'cyber', 'nature'];
 
+// Avatar icon per theme — swapped whenever the theme changes
+const AVATAR_ICONS = {
+    workspace: '💻',
+    cyber:     '🤖',
+    nature:    '🌿',
+};
+
 export function injectThemeToggle() {
     const html = `
     <div class="theme-toggle" id="themeToggle">
@@ -22,6 +29,9 @@ export function applyTheme(theme) {
     document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === t);
     });
+    // Swap avatar icon if the element exists (home page only)
+    const avatar = document.querySelector('.avatar');
+    if (avatar) avatar.textContent = AVATAR_ICONS[t] ?? AVATAR_ICONS.cyber;
 }
 
 export function initTheme() {
