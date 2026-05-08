@@ -1668,98 +1668,51 @@ body::after {
 }
 
 /* ──────────────────────────────────────────────────────────
-   CYBER — octagonal shape, scan-line sweep, glitch flicker
+   CYBER — SVG hex avatar; shape/glow handled by inline SVG
+   CSS only provides external drop-shadow + flicker + float
    ────────────────────────────────────────────────────────── */
 .theme-cyber .avatar {
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    clip-path: none;
     border-radius: 0;
     border: none;
-    background: linear-gradient(145deg, #010d1e 0%, #041828 60%, #010810 100%);
+    background: transparent;
     box-shadow: none;
+    overflow: visible;
     filter:
         drop-shadow(0 0  5px #00FFCC)
-        drop-shadow(0 0 14px rgba(0, 255, 204, 0.45))
-        drop-shadow(0 0 28px rgba(0, 255, 204, 0.18));
+        drop-shadow(0 0 16px rgba(0, 255, 204, 0.38));
     animation: float 6s ease-in-out infinite, cyber-avatar-flicker 10s infinite;
 }
 
-/* scan line that sweeps top→bottom inside the octagon */
-.theme-cyber .avatar::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 2px;
-    top: 0;
-    background: linear-gradient(90deg, transparent 5%, rgba(0, 255, 204, 0.85) 50%, transparent 95%);
-    box-shadow: 0 0 8px rgba(0, 255, 204, 0.7), 0 0 16px rgba(0, 255, 204, 0.3);
-    border-radius: 0;
-    border: none;
-    -webkit-mask: none;
-    mask: none;
-    animation: cyber-scanline 3s ease-in-out infinite;
-}
-
-/* RGB split ghost — flashes briefly with glitch */
+/* disable holo-shimmer pseudo-elements on cyber avatar */
+.theme-cyber .avatar::before,
 .theme-cyber .avatar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: none;
-    mix-blend-mode: screen;
-    animation: cyber-rgb-ghost 10s infinite;
-    pointer-events: none;
+    content: none;
 }
 
 .theme-cyber .avatar:hover {
     filter:
-        drop-shadow(0 0  8px #00FFCC)
-        drop-shadow(0 0 22px rgba(0, 255, 204, 0.65))
-        drop-shadow(0 0 40px rgba(0, 255, 204, 0.3));
+        drop-shadow(0 0  9px #00FFCC)
+        drop-shadow(0 0 24px rgba(0, 255, 204, 0.6));
     transform: scale(1.06);
-}
-
-@keyframes cyber-scanline {
-    0%   { top:  8%; opacity: 0; }
-    8%   { opacity: 1; }
-    78%  { opacity: 1; }
-    88%  { top: 85%; opacity: 0; }
-    100% { top: 85%; opacity: 0; }
 }
 
 @keyframes cyber-avatar-flicker {
     0%, 86%, 100% {
-        filter: drop-shadow(0 0 5px #00FFCC) drop-shadow(0 0 14px rgba(0,255,204,.45));
+        filter: drop-shadow(0 0 5px #00FFCC) drop-shadow(0 0 16px rgba(0,255,204,.38));
     }
     87% {
-        filter: drop-shadow(0 0 3px #FF007F) drop-shadow(0 0 12px rgba(255,0,127,.7)) brightness(1.3);
+        filter: drop-shadow(0 0 3px #FF007F) drop-shadow(0 0 12px rgba(255,0,127,.65)) brightness(1.3);
     }
     88% {
-        filter: drop-shadow(0 0 9px #00FFCC) drop-shadow(0 0 22px rgba(0,255,204,.8)) brightness(1.6);
+        filter: drop-shadow(0 0 10px #00FFCC) drop-shadow(0 0 24px rgba(0,255,204,.75)) brightness(1.55);
     }
     89% {
-        filter: drop-shadow(0 0 2px #00FFCC) drop-shadow(0 0  8px rgba(0,255,204,.3)) brightness(0.65);
+        filter: drop-shadow(0 0 2px #00FFCC) drop-shadow(0 0  7px rgba(0,255,204,.22)) brightness(0.68);
     }
     90% {
-        filter: drop-shadow(0 0 5px #00FFCC) drop-shadow(0 0 14px rgba(0,255,204,.45));
+        filter: drop-shadow(0 0 5px #00FFCC) drop-shadow(0 0 16px rgba(0,255,204,.38));
     }
-}
-
-@keyframes cyber-rgb-ghost {
-    0%, 85%, 100% { opacity: 0; clip-path: none; transform: none; }
-    86% {
-        opacity: 1;
-        background: rgba(255, 0, 127, 0.22);
-        clip-path: inset(25% 0 55% 0);
-        transform: translate(-3px, 0);
-    }
-    87% {
-        opacity: 1;
-        background: rgba(0, 255, 204, 0.18);
-        clip-path: inset(58% 0 12% 0);
-        transform: translate(3px, 0);
-    }
-    88% { opacity: 0; clip-path: none; transform: none; }
 }
 
 /* ──────────────────────────────────────────────────────────

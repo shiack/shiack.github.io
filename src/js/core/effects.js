@@ -55,10 +55,19 @@ export function initParticles(canvasId = 'particles-canvas') {
         a:  Math.random() * 0.45 + 0.1,
     }));
 
-    // Scan line drawn on-canvas so it is physically in the background layer
-    let scanY    = 0;
-    let lastTime = 0;
-    const SCAN_DURATION = 6000; // ms per full-height pass
+    // Scan line — drawn on canvas, guaranteed behind all page content
+    // State: scanY >= 0 means actively sweeping; scanY < 0 means in pause phase
+    let scanY       = -1;
+    let scanSpeed   = 0;   // px per ms
+    let scanAlpha   = 0;   // peak opacity this pass
+    let scanPause   = (Math.random() * 6000 + 2000); // ms until first scan
+    let lastTime    = 0;
+
+    function _nextScan() {
+        scanY     = 0;
+        scanSpeed = canvas.height / (Math.random() * 7000 + 3500);
+        scanAlpha = Math.random() * 0.28 + 0.22;
+    }
 
     let raf;
     function draw(ts) {
@@ -94,20 +103,30 @@ export function initParticles(canvasId = 'particles-canvas') {
             }
         }
 
-        // Scan line — horizontal sweep drawn on canvas (guaranteed behind all page content)
-        scanY = (scanY + canvas.height * dt / SCAN_DURATION) % canvas.height;
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        grad.addColorStop(0,    'transparent');
-        grad.addColorStop(0.15, `rgba(${rgb.r},${rgb.g},${rgb.b},0.18)`);
-        grad.addColorStop(0.5,  `rgba(${rgb.r},${rgb.g},${rgb.b},0.45)`);
-        grad.addColorStop(0.85, `rgba(${rgb.r},${rgb.g},${rgb.b},0.18)`);
-        grad.addColorStop(1,    'transparent');
-        ctx.beginPath();
-        ctx.strokeStyle = grad;
-        ctx.lineWidth   = 1.5;
-        ctx.moveTo(0, scanY);
-        ctx.lineTo(canvas.width, scanY);
-        ctx.stroke();
+        if (scanY < 0) {
+            scanPause -= dt;
+            if (scanPause <= 0) _nextScan();
+        } else {
+            scanY += scanSpeed * dt;
+            if (scanY > canvas.height) {
+                scanY     = -1;
+                scanPause = Math.random() * 9000 + 3000;
+            } else {
+                const a = scanAlpha;
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                grad.addColorStop(0,    'transparent');
+                grad.addColorStop(0.12, `rgba(${rgb.r},${rgb.g},${rgb.b},${(a * 0.4).toFixed(3)})`);
+                grad.addColorStop(0.5,  `rgba(${rgb.r},${rgb.g},${rgb.b},${a.toFixed(3)})`);
+                grad.addColorStop(0.88, `rgba(${rgb.r},${rgb.g},${rgb.b},${(a * 0.4).toFixed(3)})`);
+                grad.addColorStop(1,    'transparent');
+                ctx.beginPath();
+                ctx.strokeStyle = grad;
+                ctx.lineWidth   = 1.5;
+                ctx.moveTo(0, scanY);
+                ctx.lineTo(canvas.width, scanY);
+                ctx.stroke();
+            }
+        }
 
         raf = requestAnimationFrame(draw);
     }
