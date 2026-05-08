@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客 · 技术矩阵 | shiack</title>
+    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
+    <link rel="stylesheet" href="/src/assets/styles/effects.css">
+    <script src="/src/js/modules/blog-data.js"></script>
+    <script src="/src/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+</head>
+<body class="theme-cyber">
+    <canvas id="particles-canvas" class="particles-canvas"></canvas>
+    <div id="musicPlayerContainer"></div>
+
+    <div class="container">
+        <div id="site-nav"></div>
+
+        <div class="cyber-card reveal neon-lift" style="animation-delay:.15s">
+            <h2 class="glitch" data-text="📡 技术信号 · 所有博客">📡 技术信号 · 所有博客</h2>
+            <div id="filter-tags" class="tag-cloud" style="margin:1rem 0"></div>
+            <div id="blog-list" class="blog-grid">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+
+        <footer class="reveal" style="animation-delay:.5s">✦ 赛博 · 博客系统 ✦</footer>
+    </div>
+
+    <script src="/src/components/music-player/music-player.js"></script>
+    <script type="module">
+        import { injectThemeToggle, initTheme }   from '/src/js/core/theme.js';
+        import { mountNav }                       from '/src/js/core/nav.js';
+        import { escapeHtml }                     from '/src/js/core/utils.js';
+        import { initParticles, initScrollReveal,
+                 initCardTilt, initGlitchText,
+                 initScanLine }                   from '/src/js/core/effects.js';
+
+        // ── Boot ──────────────────────────────────────────────────────────
+        injectThemeToggle();
+        initTheme();
+        mountNav('blog');
+        initParticles('particles-canvas');
+        initScanLine();
+
+        const musicPlayer = new MusicPlayer();
+        document.getElementById('musicPlayerContainer').innerHTML = musicPlayer.playerHTML;
+        musicPlayer.init();
+
+        // ── Blog list logic ───────────────────────────────────────────────
+        let currentTag = null;
+
+        function postUrl(id) {
+            return `/src/pages/blogs/blog-detail.html?file=${encodeURIComponent('/src/assets/posts/' + id + '.md')}`;
+        }
+
+        function allTags() {
+            return [...new Set(BLOG_POSTS.flatMap(p => p.tags))].sort();
+        }
+
+        function renderFilters() {
+            const container = document.getElementById('filter-tags');
+            container.innerHTML =
+                `<span style="opacity:.7;user-select:none">🏷️ 过滤标签 / Filter：</span>` +
+                allTags().map(t =>
+                    `<span class="tag ${currentTag === t ? 'active' : ''}" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</span>`
+                ).join('');
+            container.querySelectorAll('[data-tag]').forEach(el =>
+                el.addEventListener('click', () => {
+                    currentTag = currentTag === el.dataset.tag ? null : el.dataset.tag;
+                    renderFilters();
+                    renderList();
+                })
+            );
+        }
+
+        function renderList() {
+            const posts = currentTag
+                ? BLOG_POSTS.filter(p => p.tags.includes(currentTag))
+                : BLOG_POSTS;
+            const container = document.getElementById('blog-list');
+
+            if (!posts.length) {
+                container.innerHTML = '<div class="empty-state">🌀 没有找到相关博客 / No posts found</div>';
+                return;
+            }
+
+            container.innerHTML = posts.map((p, i) => `
+                <div class="blog-card reveal" style="animation-delay:${i * 45}ms">
+                    <a href="${postUrl(p.id)}" class="blog-title-link">📄 ${escapeHtml(p.title)}</a>
+                    <div class="blog-meta">🗓️ ${p.date} &nbsp;·&nbsp; 🏷️ ${p.category || ''}</div>
+                    <div class="blog-tags">${p.tags.map(t => `<span class="mini-tag">#${escapeHtml(t)}</span>`).join('')}</div>
+                    <p class="blog-summary">${escapeHtml(p.summary)}</p>
+                    <a href="${postUrl(p.id)}" class="read-more">⟢ 阅读全文 · Read More ⟢</a>
+                </div>`).join('');
+
+            initScrollReveal('.reveal');
+            initCardTilt('.blog-card');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFilters();
+            renderList();
+            initScrollReveal('.reveal');
+            initGlitchText('.glitch');
+        });
+    </script>
+</body>
+</html>

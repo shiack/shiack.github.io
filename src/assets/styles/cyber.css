@@ -1246,7 +1246,49 @@ body::after {
 .markdown-content pre code {
     background: transparent;
     padding: 0;
-    color: var(--primary-color);
+    color: var(--text-color);
+}
+/* Neutralize highlight.js token colors — monochrome code display */
+.markdown-content pre code.hljs,
+.markdown-content pre code .hljs-keyword,
+.markdown-content pre code .hljs-built_in,
+.markdown-content pre code .hljs-type,
+.markdown-content pre code .hljs-literal,
+.markdown-content pre code .hljs-number,
+.markdown-content pre code .hljs-operator,
+.markdown-content pre code .hljs-punctuation,
+.markdown-content pre code .hljs-property,
+.markdown-content pre code .hljs-string,
+.markdown-content pre code .hljs-char\.escape_,
+.markdown-content pre code .hljs-subst,
+.markdown-content pre code .hljs-regexp,
+.markdown-content pre code .hljs-symbol,
+.markdown-content pre code .hljs-class,
+.markdown-content pre code .hljs-function,
+.markdown-content pre code .hljs-title,
+.markdown-content pre code .hljs-title\.class_,
+.markdown-content pre code .hljs-title\.function_,
+.markdown-content pre code .hljs-attr,
+.markdown-content pre code .hljs-variable,
+.markdown-content pre code .hljs-template-variable,
+.markdown-content pre code .hljs-name,
+.markdown-content pre code .hljs-section,
+.markdown-content pre code .hljs-selector-tag,
+.markdown-content pre code .hljs-selector-class,
+.markdown-content pre code .hljs-selector-id,
+.markdown-content pre code .hljs-addition,
+.markdown-content pre code .hljs-deletion,
+.markdown-content pre code .hljs-meta,
+.markdown-content pre code .hljs-comment,
+.markdown-content pre code .hljs-quote,
+.markdown-content pre code .hljs-tag,
+.markdown-content pre code .hljs-emphasis,
+.markdown-content pre code .hljs-strong,
+.markdown-content pre code .hljs-link,
+.markdown-content pre code .hljs-bullet,
+.markdown-content pre code .hljs-doctag,
+.markdown-content pre code .hljs-params {
+    color: inherit;
 }
 
 .markdown-content p {
@@ -1384,6 +1426,47 @@ body::after {
 .markdown-body pre code {
     background: transparent;
     padding: 0;
+    color: var(--text-color);
+}
+/* Neutralize highlight.js token colors in markdown-body */
+.markdown-body pre code.hljs,
+.markdown-body pre code .hljs-keyword,
+.markdown-body pre code .hljs-built_in,
+.markdown-body pre code .hljs-type,
+.markdown-body pre code .hljs-literal,
+.markdown-body pre code .hljs-number,
+.markdown-body pre code .hljs-operator,
+.markdown-body pre code .hljs-punctuation,
+.markdown-body pre code .hljs-property,
+.markdown-body pre code .hljs-string,
+.markdown-body pre code .hljs-subst,
+.markdown-body pre code .hljs-regexp,
+.markdown-body pre code .hljs-symbol,
+.markdown-body pre code .hljs-class,
+.markdown-body pre code .hljs-function,
+.markdown-body pre code .hljs-title,
+.markdown-body pre code .hljs-title\.class_,
+.markdown-body pre code .hljs-title\.function_,
+.markdown-body pre code .hljs-attr,
+.markdown-body pre code .hljs-variable,
+.markdown-body pre code .hljs-template-variable,
+.markdown-body pre code .hljs-name,
+.markdown-body pre code .hljs-section,
+.markdown-body pre code .hljs-selector-tag,
+.markdown-body pre code .hljs-selector-class,
+.markdown-body pre code .hljs-selector-id,
+.markdown-body pre code .hljs-addition,
+.markdown-body pre code .hljs-deletion,
+.markdown-body pre code .hljs-meta,
+.markdown-body pre code .hljs-comment,
+.markdown-body pre code .hljs-quote,
+.markdown-body pre code .hljs-tag,
+.markdown-body pre code .hljs-emphasis,
+.markdown-body pre code .hljs-strong,
+.markdown-body pre code .hljs-link,
+.markdown-body pre code .hljs-bullet,
+.markdown-body pre code .hljs-params {
+    color: inherit;
 }
 
 .markdown-body p {

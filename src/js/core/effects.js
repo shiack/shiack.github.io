@@ -123,20 +123,48 @@ export function initCardTilt(selector = '.blog-card') {
 const GLITCH_CHARS = '!<>-_\\/[]{}—=+*^?#@~|';
 export function initGlitchText(selector = '.glitch') {
     document.querySelectorAll(selector).forEach(el => {
-        const orig = el.dataset.text || el.textContent;
+        const orig = el.dataset.text || el.textContent.trim();
         el.dataset.text = orig;
-        let iv;
-        el.addEventListener('mouseenter', () => {
-            let step = 0;
-            iv = setInterval(() => {
-                el.textContent = orig.split('').map((c, i) =>
-                    i < step ? orig[i] : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
-                ).join('');
-                step += 1.8;
-                if (step >= orig.length) { clearInterval(iv); el.textContent = orig; }
-            }, 28);
+        let rafId = null;
+
+        function runGlitch() {
+            if (rafId) cancelAnimationFrame(rafId);
+            // Phase 1 (0–25%): brief full-chaos burst
+            // Phase 2 (25–100%): clean left-to-right decode, single frontier char
+            const DURATION   = 360;
+            const CHAOS_FRAC = 0.22;
+            const start = performance.now();
+
+            function tick(now) {
+                const t = Math.min((now - start) / DURATION, 1);
+                if (t >= 1) { el.textContent = orig; rafId = null; return; }
+
+                if (t < CHAOS_FRAC) {
+                    // All chars random — brief burst of noise
+                    el.textContent = orig.split('').map(c =>
+                        c === ' ' ? ' ' : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
+                    ).join('');
+                } else {
+                    // Sweep decode: chars before frontier locked, single scramble at frontier
+                    const sweep    = (t - CHAOS_FRAC) / (1 - CHAOS_FRAC);
+                    const frontier = Math.floor(sweep * orig.length);
+                    el.textContent = orig.split('').map((c, i) => {
+                        if (c === ' ')    return ' ';
+                        if (i < frontier) return orig[i];
+                        if (i === frontier) return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+                        return orig[i];
+                    }).join('');
+                }
+                rafId = requestAnimationFrame(tick);
+            }
+            rafId = requestAnimationFrame(tick);
+        }
+
+        el.addEventListener('mouseenter', runGlitch);
+        el.addEventListener('mouseleave', () => {
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+            el.textContent = orig;
         });
-        el.addEventListener('mouseleave', () => { clearInterval(iv); el.textContent = orig; });
     });
 }
 
