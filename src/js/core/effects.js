@@ -55,8 +55,16 @@ export function initParticles(canvasId = 'particles-canvas') {
         a:  Math.random() * 0.45 + 0.1,
     }));
 
+    // Scan line drawn on-canvas so it is physically in the background layer
+    let scanY    = 0;
+    let lastTime = 0;
+    const SCAN_DURATION = 6000; // ms per full-height pass
+
     let raf;
-    function draw() {
+    function draw(ts) {
+        const dt = lastTime ? ts - lastTime : 16;
+        lastTime = ts;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         const primary = getCssVar('--primary-color') || '#00FFCC';
         const rgb = hexToRgb(primary) || { r: 0, g: 255, b: 204 };
@@ -85,9 +93,25 @@ export function initParticles(canvasId = 'particles-canvas') {
                 }
             }
         }
+
+        // Scan line — horizontal sweep drawn on canvas (guaranteed behind all page content)
+        scanY = (scanY + canvas.height * dt / SCAN_DURATION) % canvas.height;
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0,    'transparent');
+        grad.addColorStop(0.15, `rgba(${rgb.r},${rgb.g},${rgb.b},0.18)`);
+        grad.addColorStop(0.5,  `rgba(${rgb.r},${rgb.g},${rgb.b},0.45)`);
+        grad.addColorStop(0.85, `rgba(${rgb.r},${rgb.g},${rgb.b},0.18)`);
+        grad.addColorStop(1,    'transparent');
+        ctx.beginPath();
+        ctx.strokeStyle = grad;
+        ctx.lineWidth   = 1.5;
+        ctx.moveTo(0, scanY);
+        ctx.lineTo(canvas.width, scanY);
+        ctx.stroke();
+
         raf = requestAnimationFrame(draw);
     }
-    draw();
+    requestAnimationFrame(draw);
     // Return cleanup function
     return () => cancelAnimationFrame(raf);
 }
@@ -181,12 +205,8 @@ export function typeText(el, text, speed = 48) {
 }
 
 // ─── Scan Line ───────────────────────────────────────────────────────────────
-export function initScanLine() {
-    if (document.querySelector('.scan-line')) return;
-    const line = document.createElement('div');
-    line.className = 'scan-line';
-    document.body.appendChild(line);
-}
+// Scan line is now drawn inside the particles canvas — kept for API compatibility.
+export function initScanLine() {}
 
 // ─── Reading Progress Bar ────────────────────────────────────────────────────
 export function initReadingProgress(articleSelector = 'article, .markdown-content') {
