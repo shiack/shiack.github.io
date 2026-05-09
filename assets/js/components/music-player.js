@@ -1,3 +1,24 @@
+/**
+ * @file music-player.js
+ * @description 可拖拽悬浮背景音乐播放器组件。
+ *
+ * 功能：
+ *   - 读取 music-config.js 中定义的 MUSIC_LIST 播放列表
+ *   - 支持折叠/展开两种视图，展开时显示进度条与曲目信息
+ *   - 拖拽拖柄可自由移动播放器位置
+ *   - 进度条支持点击跳转与拖拽拖动
+ *   - 通过 localStorage 持久化当前曲目索引与播放进度
+ *   - 异步验证音乐文件是否存在，过滤缺失文件
+ *
+ * 依赖：
+ *   - music-config.js 提供全局 MUSIC_LIST 变量
+ *   - utils.js 中的 formatTime（若需要，当前通过内联实现）
+ *
+ * 初始化：
+ *   const player = new MusicPlayer();
+ *   player.mount(document.body);  // 挂载到指定容器
+ */
+
 // 音乐播放器组件
 class MusicPlayer {
     constructor() {

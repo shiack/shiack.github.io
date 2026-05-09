@@ -1,9 +1,26 @@
 /**
- * markdown-renderer.js — Shared markdown loading & rendering utilities.
- * Used by blog-detail.html and cms.html.
+ * @file markdown-renderer.js
+ * @description 共享 Markdown 加载与渲染工具模块。
+ *
+ * 职责：
+ *   - 通过 fetch 异步获取 Markdown 文件
+ *   - 从 localStorage 读取 CMS 草稿内容
+ *   - 调用全局 marked.js 将 Markdown 解析为 HTML
+ *   - 对渲染结果进行后处理增强（图片、链接、代码复制、锚点、TOC）
+ *   - 从 Markdown 文本中提取标题与摘要
+ *
+ * 依赖：
+ *   - marked.js（须在页面中全局加载，如 <script src="...marked.min.js">）
+ *
+ * 使用方的页面：pages/blog/post.html、pages/cms/index.html
  */
 
-/** Fetch markdown text from a URL. Returns null on failure. */
+/**
+ * 异步获取指定 URL 的 Markdown 文本内容。
+ * 网络失败或 HTTP 非 2xx 时打印错误并返回 null，调用方需自行处理 null 情况。
+ * @param {string} url - Markdown 文件的绝对或相对 URL
+ * @returns {Promise<string|null>} Markdown 文本，失败时返回 null
+ */
 export async function fetchMarkdown(url) {
     try {
         const res = await fetch(url);
@@ -15,7 +32,12 @@ export async function fetchMarkdown(url) {
     }
 }
 
-/** Load CMS-generated markdown from localStorage by article ID. */
+/**
+ * 从 localStorage 读取 CMS 编辑器保存的文章草稿。
+ * 存储键格式为 "cms_article_{articleId}"，值为 JSON 序列化的文章对象。
+ * @param {string} articleId - 文章唯一标识符
+ * @returns {Object|null} 文章对象，不存在或解析失败时返回 null
+ */
 export function loadFromLocalStorage(articleId) {
     try {
         const raw = localStorage.getItem(`cms_article_${articleId}`);
@@ -25,7 +47,13 @@ export function loadFromLocalStorage(articleId) {
     }
 }
 
-/** Parse markdown text to HTML using marked.js (must be loaded globally). */
+/**
+ * 使用全局 marked.js 将 Markdown 文本解析为 HTML 字符串。
+ * 启用 GFM（GitHub Flavored Markdown）和软换行支持。
+ * 若 marked.js 未加载，回退为 <pre> 原文显示并打印错误。
+ * @param {string} text - 原始 Markdown 文本
+ * @returns {string} 解析后的 HTML 字符串
+ */
 export function renderMarkdownText(text) {
     if (typeof marked === 'undefined') {
         console.error('[markdown-renderer] marked.js not loaded');
@@ -36,12 +64,13 @@ export function renderMarkdownText(text) {
 }
 
 /**
- * Post-process a rendered markdown container:
- * - Responsive images with figure/figcaption
- * - External links open in new tab
- * - Copy-to-clipboard buttons on code blocks
- * - Anchor links on headings
- * - Auto TOC if ≥3 headings and #toc-container exists
+ * 对已渲染的 Markdown 容器进行后处理增强，包括：
+ *   1. **图片懒加载**：添加 loading="lazy"，错误时隐藏，并用 <figure>/<figcaption> 包裹
+ *   2. **外部链接**：href 以 http 开头的链接自动添加 target="_blank" 和 rel="noopener noreferrer"
+ *   3. **代码复制按钮**：每个 <pre><code> 块右上角插入"复制 / Copy"按钮，点击后 2s 内显示"✓ Copied"
+ *   4. **标题锚点**：h1–h4 自动生成 id 并追加 "#" 锚点链接，支持页内跳转
+ *   5. **自动目录（TOC）**：h2/h3 数量 ≥ 3 且页面含 #toc-container 时，生成嵌套导航
+ * @param {HTMLElement|null} container - 包含渲染后 HTML 的 DOM 容器；为 null 时静默跳过
  */
 export function enhanceContent(container) {
     if (!container) return;
@@ -117,13 +146,24 @@ export function enhanceContent(container) {
     }
 }
 
-/** Extract first H1 title from markdown text. */
+/**
+ * 从 Markdown 文本中提取第一个 H1 标题内容。
+ * 匹配格式：行首 "# " 后跟任意字符。
+ * @param {string} md - 原始 Markdown 文本
+ * @returns {string|null} 标题文字（已去除首尾空白），无 H1 时返回 null
+ */
 export function extractTitle(md) {
     const m = md.match(/^#\s+(.+)$/m);
     return m ? m[1].trim() : null;
 }
 
-/** Extract plain-text summary (first 160 chars of body). */
+/**
+ * 从 Markdown 文本中提取纯文本摘要（去除标题、代码块和 Markdown 语法）。
+ * 结果超过 maxLen 时截断并追加 "…"。
+ * @param {string} md          - 原始 Markdown 文本
+ * @param {number} [maxLen=160] - 最大字符数
+ * @returns {string} 纯文本摘要
+ */
 export function extractSummary(md, maxLen = 160) {
     const body = md
         .replace(/^#+.+$/gm, '')

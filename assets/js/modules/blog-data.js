@@ -1,3 +1,26 @@
+/**
+ * @file blog-data.js
+ * @description 全站博客元数据配置中心。
+ *
+ * 职责：
+ *   - 维护所有博客文章的元数据（id、标题、日期、标签、分类、权重、摘要）
+ *   - 定义标签分类体系（TAG_CATEGORIES）及标签到分类的映射表（TAG_TO_CATEGORY）
+ *   - 将各分类文章合并为按权重降序排列的全量列表 BLOG_POSTS
+ *
+ * 新增博客时：
+ *   1. 在对应分类的 *_POSTS 数组末尾添加记录（字段说明见下方）
+ *   2. 在 assets/posts/{category}/ 目录下创建同名 .md 文件
+ *
+ * 文章字段说明：
+ *   - id:       "{分类}/{序号}_{slug}"，对应 Markdown 文件名（不含 .md）
+ *   - title:    文章标题（用于列表展示）
+ *   - date:     发布日期，ISO 格式 "YYYY-MM-DD"
+ *   - tags:     标签数组，需在 TAG_TO_CATEGORY 中注册
+ *   - category: 所属分类 id（backend / frontend / ai / testdev / automation）
+ *   - weight:   排序权重（整数，越大越靠前）
+ *   - summary:  文章摘要（用于列表卡片展示）
+ */
+
 // blog-data.js - 所有博客的元数据
 // 新增博客时：1. 在下方添加记录  2. 在 blogs/assets/posts/ 目录创建对应的 Markdown 文件
 
