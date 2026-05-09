@@ -1,0 +1,384 @@
+/**
+ * @file email-subscribe.css
+ * @description 邮件订阅面板组件样式
+ *
+ * 结构层级：
+ *   .es-panel                   — 面板容器（上下 border 分隔区块）
+ *     .es-header                — 图标 + 标题 + 描述行
+ *     .es-actions               — 按钮行（邮件订阅按钮 + RSS 链接）
+ *     .es-form-wrap             — 折叠表单区（max-height 动画）
+ *       .es-form-inner          — 表单内容（输入框 + 提交按钮 + 提示）
+ *     .es-subscribed-row        — 已订阅状态行（替换按钮行）
+ *
+ * 主题适配：
+ *   - cyber   : 霓虹绿 #00FFCC，深色背景
+ *   - workspace: 蓝色 #1D4ED8，浅色背景
+ *   - nature  : 森林绿 #3D4E36，暖白背景
+ */
+
+/* ── Panel container ──────────────────────────────────────────── */
+.es-panel {
+    padding: .9rem 0 1.05rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+/* ── Header row ───────────────────────────────────────────────── */
+.es-header {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: .65rem;
+}
+
+.es-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: .05rem;
+    opacity: .88;
+}
+
+.es-title-wrap {
+    flex: 1 1 auto;
+}
+
+.es-title {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: .04em;
+    line-height: 1.35;
+}
+
+.es-desc {
+    font-size: .72rem;
+    color: var(--text-muted);
+    font-family: monospace;
+    margin-top: .18rem;
+    letter-spacing: .03em;
+}
+
+/* ── Action row ────────────────────────────────────────────────── */
+.es-actions {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    flex-wrap: wrap;
+}
+
+/* ── Base button ───────────────────────────────────────────────── */
+.es-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .28rem;
+    padding: .32rem .9rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: .78rem;
+    font-family: monospace;
+    cursor: pointer;
+    transition: border-color .18s, color .18s, background .18s, box-shadow .18s;
+    line-height: 1.55;
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+}
+
+.es-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(0, 255, 204, .06);
+}
+
+.es-btn.active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(0, 255, 204, .09);
+}
+
+/* RSS button — dedicated orange tint */
+.es-btn-rss:hover {
+    border-color: #f97316;
+    color: #f97316;
+    background: rgba(249, 115, 22, .07);
+    box-shadow: none;
+}
+
+/* workspace theme overrides */
+.theme-workspace .es-btn:hover,
+.theme-workspace .es-btn.active {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: rgba(29, 78, 216, .06);
+}
+
+.theme-workspace .es-btn-rss:hover {
+    border-color: #f97316;
+    color: #f97316;
+    background: rgba(249, 115, 22, .07);
+}
+
+/* nature theme overrides */
+.theme-nature .es-btn:hover,
+.theme-nature .es-btn.active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(61, 78, 54, .07);
+    box-shadow: none;
+}
+
+/* ── Collapsed → expanded form (max-height animation) ─────────── */
+.es-form-wrap {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .33s cubic-bezier(.4, 0, .2, 1),
+                opacity .24s ease;
+}
+
+.es-form-wrap.open {
+    max-height: 170px;
+    opacity: 1;
+}
+
+.es-form-inner {
+    padding: .72rem 0 .15rem;
+}
+
+/* ── Input row ─────────────────────────────────────────────────── */
+.es-input-row {
+    display: flex;
+    gap: .55rem;
+}
+
+.es-input {
+    flex: 1 1 0;
+    min-width: 0;
+    background: rgba(0, 0, 0, .15);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: .48rem .9rem;
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: .84rem;
+    transition: border-color .18s, box-shadow .18s;
+    outline: none;
+    line-height: 1.4;
+}
+
+.es-input::placeholder {
+    color: var(--text-muted);
+    opacity: .65;
+}
+
+.es-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 255, 204, .13),
+                0 0 8px rgba(0, 255, 204, .17);
+}
+
+/* workspace input */
+.theme-workspace .es-input {
+    background: rgba(0, 0, 0, .04);
+}
+
+.theme-workspace .es-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, .1);
+}
+
+/* nature input */
+.theme-nature .es-input {
+    background: rgba(255, 255, 255, .6);
+}
+
+.theme-nature .es-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(61, 78, 54, .1);
+}
+
+/* ── Submit button ─────────────────────────────────────────────── */
+.es-submit {
+    flex-shrink: 0;
+    padding: .48rem 1.2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--primary-color);
+    background: rgba(0, 255, 204, .09);
+    color: var(--primary-color);
+    font-family: monospace;
+    font-size: .84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .18s, box-shadow .18s, transform .15s, opacity .15s;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.es-submit:hover:not(:disabled) {
+    background: rgba(0, 255, 204, .17);
+    box-shadow: 0 0 14px rgba(0, 255, 204, .35);
+    transform: translateY(-1px);
+}
+
+.es-submit:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.es-submit:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.theme-workspace .es-submit {
+    border-color: var(--accent-color);
+    background: rgba(29, 78, 216, .08);
+    color: var(--accent-color);
+}
+
+.theme-workspace .es-submit:hover:not(:disabled) {
+    background: rgba(29, 78, 216, .14);
+    box-shadow: 0 0 12px rgba(29, 78, 216, .22);
+}
+
+.theme-nature .es-submit {
+    border-color: var(--primary-color);
+    background: rgba(61, 78, 54, .08);
+    color: var(--primary-color);
+}
+
+.theme-nature .es-submit:hover:not(:disabled) {
+    background: rgba(61, 78, 54, .14);
+    box-shadow: 0 2px 8px rgba(61, 78, 54, .18);
+}
+
+/* ── Hint messages ─────────────────────────────────────────────── */
+.es-hint {
+    font-size: .77rem;
+    font-family: monospace;
+    margin-top: .5rem;
+    padding: .3rem .7rem;
+    border-radius: var(--radius);
+    border-left: 2px solid transparent;
+    line-height: 1.45;
+    animation: es-fade-in .22s ease;
+}
+
+.es-hint.success {
+    color: #4ade80;
+    border-left-color: #4ade80;
+    background: rgba(74, 222, 128, .07);
+}
+
+.es-hint.error {
+    color: #f87171;
+    border-left-color: #f87171;
+    background: rgba(248, 113, 113, .07);
+}
+
+.es-hint.info {
+    color: var(--text-muted);
+    border-left-color: var(--border-color);
+    background: rgba(255, 255, 255, .03);
+}
+
+/* workspace hint colors stay the same (contrast ok on white bg) */
+.theme-workspace .es-hint.info {
+    background: rgba(0, 0, 0, .04);
+}
+
+/* ── Footnote ──────────────────────────────────────────────────── */
+.es-footnote {
+    font-size: .69rem;
+    color: var(--text-muted);
+    margin-top: .4rem;
+    font-family: monospace;
+    letter-spacing: .02em;
+    opacity: .78;
+}
+
+/* ── Already-subscribed state ──────────────────────────────────── */
+.es-subscribed-row {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+    font-size: .82rem;
+    font-family: monospace;
+    animation: es-pop .38s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+.es-subscribed-email {
+    color: var(--primary-color);
+    font-weight: 600;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.theme-workspace .es-subscribed-email {
+    color: var(--accent-color);
+}
+
+.es-unsub-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: .72rem;
+    font-family: monospace;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    transition: color .15s;
+    opacity: .75;
+}
+
+.es-unsub-btn:hover {
+    color: #f87171;
+    opacity: 1;
+}
+
+/* ── Loading spinner ───────────────────────────────────────────── */
+@keyframes es-spin {
+    to { transform: rotate(360deg); }
+}
+
+.es-spinner {
+    display: inline-block;
+    width: .82em;
+    height: .82em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: es-spin .55s linear infinite;
+    vertical-align: middle;
+    margin-right: .3em;
+}
+
+/* ── Entry animations ─────────────────────────────────────────── */
+@keyframes es-fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes es-pop {
+    0%   { transform: scale(.85); opacity: 0; }
+    65%  { transform: scale(1.05); }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .es-input-row {
+        flex-direction: column;
+    }
+
+    .es-submit {
+        width: 100%;
+    }
+}

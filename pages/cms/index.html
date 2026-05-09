@@ -9,6 +9,7 @@
     <script src="/assets/js/modules/blog-data.js"></script>
     <script src="/assets/js/modules/music-config.js"></script>
     <link rel="stylesheet" href="/assets/css/components/music-player.css">
+    <link rel="stylesheet" href="/assets/css/components/email-subscribe.css">
     <style>
         /* ── Schedule bar ─────────────────────────────────────────── */
         .schedule-bar {
@@ -166,6 +167,9 @@
             <!-- live countdown -->
             <div class="countdown-line" id="countdownLine">计算中…</div>
 
+            <!-- ── email subscribe panel ── -->
+            <div id="es-container"></div>
+
             <!-- ── filters (same pattern as blog-list tag-cloud) ── -->
             <div class="sub-heading" id="filterLabel">🏷️ 分类 / Category：</div>
             <div class="tag-cloud" id="categoryCloud" style="margin-bottom:.75rem"></div>
@@ -200,6 +204,7 @@
         import { initParticles, initScrollReveal,
                  initCardTilt, initGlitchText,
                  initScanLine }                   from '/assets/js/core/effects.js';
+        import { mountEmailSubscribe }            from '/assets/js/modules/email-subscribe.js';
 
         // ── Boot ──────────────────────────────────────────────────────────
         injectThemeToggle();
@@ -413,6 +418,7 @@
             initGlitchText('.glitch');
             renderScheduleBar();
             updateCountdown();
+            mountEmailSubscribe(document.getElementById('es-container'));
             await loadArticles();
         });
     </script>
