@@ -2,8 +2,8 @@
 // 新增博客时：1. 在下方添加记录  2. 在 blogs/assets/posts/ 目录创建对应的 Markdown 文件
 
 const BLOG_CONFIG = {
-    BLOG_FOLDER: 'src/pages/blogs',
-    POSTS_FOLDER: 'src/assets/posts',
+    BLOG_FOLDER: 'pages/blog',
+    POSTS_FOLDER: 'assets/posts',
     USE_CLEAN_URL: false,
     MARKDOWN_EXT: '.md',
 };

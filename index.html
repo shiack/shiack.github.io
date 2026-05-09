@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>shiack · 全栈架构师 | CyberGeek</title>
-    <link rel="stylesheet" href="src/assets/styles/cyber.css">
-    <link rel="stylesheet" href="src/assets/styles/effects.css">
-    <script src="src/js/modules/blog-data.js"></script>
-    <script src="src/js/modules/music-config.js"></script>
-    <link rel="stylesheet" href="src/components/music-player/music-player.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/base/effects.css">
+    <script src="assets/js/modules/blog-data.js"></script>
+    <script src="assets/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="assets/css/components/music-player.css">
 </head>
 <body class="theme-cyber">
     <canvas id="particles-canvas" class="particles-canvas"></canvas>
@@ -137,13 +137,13 @@
         <footer class="reveal" style="animation-delay:2s">✦ shiack · 博客 ✦</footer>
     </div>
 
-    <script src="src/components/music-player/music-player.js"></script>
+    <script src="assets/js/components/music-player.js"></script>
     <script type="module">
-        import { injectThemeToggle, initTheme }      from '/src/js/core/theme.js';
-        import { mountNav }                          from '/src/js/core/nav.js';
+        import { injectThemeToggle, initTheme }      from '/assets/js/core/theme.js';
+        import { mountNav }                          from '/assets/js/core/nav.js';
         import { initParticles, initScrollReveal,
                  initGlitchText, initScanLine,
-                 initNeonLift }                      from '/src/js/core/effects.js';
+                 initNeonLift }                      from '/assets/js/core/effects.js';
 
         injectThemeToggle();
         initTheme();

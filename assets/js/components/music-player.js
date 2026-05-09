@@ -129,7 +129,7 @@ class MusicPlayer {
 
     // 获取音乐文件路径
     getMusicPath(filename) {
-        return `/src/assets/music/${filename}`;
+        return `/assets/music/${filename}`;
     }
 
     // 加载播放状态

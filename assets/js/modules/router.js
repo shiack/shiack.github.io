@@ -17,21 +17,21 @@ export const ROUTES = {
     
     // 博客列表页
     blogList: {
-        path: `${BASE_PATH}/src/pages/blogs/blog-list.html`,
+        path: `${BASE_PATH}/pages/blog/index.html`,
         name: '博客列表',
         title: '赛博博客 · 技术矩阵'
     },
     
     // 博客详情页（动态路由）
     blogDetail: {
-        path: `${BASE_PATH}/src/pages/blogs/blog-detail.html`,
+        path: `${BASE_PATH}/pages/blog/post.html`,
         name: '博客详情',
         title: '博客详情 | CyberBlog'
     },
 
     // CMS 内容管理页
     cms: {
-        path: `${BASE_PATH}/src/pages/cms/cms.html`,
+        path: `${BASE_PATH}/pages/cms/index.html`,
         name: 'CMS',
         title: 'CMS · 内容管理 | shiack'
     }

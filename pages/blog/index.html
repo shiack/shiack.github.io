@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>博客 · 技术矩阵 | shiack</title>
-    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
-    <link rel="stylesheet" href="/src/assets/styles/effects.css">
-    <script src="/src/js/modules/blog-data.js"></script>
-    <script src="/src/js/modules/music-config.js"></script>
-    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/base/effects.css">
+    <script src="/assets/js/modules/blog-data.js"></script>
+    <script src="/assets/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="/assets/css/components/music-player.css">
 </head>
 <body class="theme-cyber">
     <canvas id="particles-canvas" class="particles-canvas"></canvas>
@@ -33,14 +33,14 @@
         <footer class="reveal" style="animation-delay:.5s">✦ 赛博 · 博客系统 ✦</footer>
     </div>
 
-    <script src="/src/components/music-player/music-player.js"></script>
+    <script src="/assets/js/components/music-player.js"></script>
     <script type="module">
-        import { injectThemeToggle, initTheme }   from '/src/js/core/theme.js';
-        import { mountNav }                       from '/src/js/core/nav.js';
-        import { escapeHtml }                     from '/src/js/core/utils.js';
+        import { injectThemeToggle, initTheme }   from '/assets/js/core/theme.js';
+        import { mountNav }                       from '/assets/js/core/nav.js';
+        import { escapeHtml }                     from '/assets/js/core/utils.js';
         import { initParticles, initScrollReveal,
                  initCardTilt, initGlitchText,
-                 initScanLine }                   from '/src/js/core/effects.js';
+                 initScanLine }                   from '/assets/js/core/effects.js';
 
         // ── Boot ──────────────────────────────────────────────────────────
         injectThemeToggle();
@@ -57,7 +57,7 @@
         let currentTag = null;
 
         function postUrl(id) {
-            return `/src/pages/blogs/blog-detail.html?file=${encodeURIComponent('/src/assets/posts/' + id + '.md')}`;
+            return `/pages/blog/post.html?file=${encodeURIComponent('/assets/posts/' + id + '.md')}`;
         }
 
         function allTags() {

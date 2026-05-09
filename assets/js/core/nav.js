@@ -6,8 +6,8 @@
 
 const NAV_LINKS = [
     { id: 'home', path: '/index.html',                               icon: '⌾', label: '简历' },
-    { id: 'blog', path: '/src/pages/blogs/blog-list.html',           icon: '◉', label: '博客' },
-    { id: 'cms',  path: '/src/pages/cms/cms.html',                   icon: '⊕', label: 'CMS'  },
+    { id: 'blog', path: '/pages/blog/index.html',           icon: '◉', label: '博客' },
+    { id: 'cms',  path: '/pages/cms/index.html',                   icon: '⊕', label: 'CMS'  },
 ];
 
 /**

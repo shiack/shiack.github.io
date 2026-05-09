@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>博客详情 | shiack</title>
-    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
-    <link rel="stylesheet" href="/src/assets/styles/effects.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/base/effects.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.2.0/marked.min.js"></script>
-    <script src="/src/js/modules/blog-data.js"></script>
-    <script src="/src/js/modules/music-config.js"></script>
-    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+    <script src="/assets/js/modules/blog-data.js"></script>
+    <script src="/assets/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="/assets/css/components/music-player.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -496,7 +496,7 @@
 
                     <!-- Hero: back link + title + meta -->
                     <div class="article-hero">
-                        <a href="/src/pages/blogs/blog-list.html" class="back-link">← 返回博客列表</a>
+                        <a href="/pages/blog/index.html" class="back-link">← 返回博客列表</a>
                         <h1 id="blogTitle" class="blog-title-detail"></h1>
                         <div id="blogMeta" class="blog-meta-detail"></div>
                     </div>
@@ -525,16 +525,16 @@
         <footer class="reveal" style="animation-delay:.5s">✦ shiack · 博客 ✦</footer>
     </div>
 
-    <script src="/src/components/music-player/music-player.js"></script>
+    <script src="/assets/js/components/music-player.js"></script>
     <script type="module">
-        import { injectThemeToggle, initTheme }     from '/src/js/core/theme.js';
-        import { mountNav }                         from '/src/js/core/nav.js';
-        import { escapeHtml }                       from '/src/js/core/utils.js';
+        import { injectThemeToggle, initTheme }     from '/assets/js/core/theme.js';
+        import { mountNav }                         from '/assets/js/core/nav.js';
+        import { escapeHtml }                       from '/assets/js/core/utils.js';
         import { initParticles, initScrollReveal,
-                 initReadingProgress, initScanLine } from '/src/js/core/effects.js';
+                 initReadingProgress, initScanLine } from '/assets/js/core/effects.js';
         import { fetchMarkdown, loadFromLocalStorage,
                  renderMarkdownText, enhanceContent,
-                 extractTitle }                     from '/src/js/core/markdown-renderer.js';
+                 extractTitle }                     from '/assets/js/core/markdown-renderer.js';
 
         injectThemeToggle();
         initTheme();
@@ -609,7 +609,7 @@
                 .sort(() => 0.5 - Math.random())
                 .slice(0, 4);
             container.innerHTML = pool.map(p => {
-                const url = `/src/pages/blogs/blog-detail.html?file=${encodeURIComponent('/src/assets/posts/' + p.id + '.md')}`;
+                const url = `/pages/blog/post.html?file=${encodeURIComponent('/assets/posts/' + p.id + '.md')}`;
                 return `<a href="${url}" class="related-item">📄 ${escapeHtml(p.title)}</a>`;
             }).join('');
         }

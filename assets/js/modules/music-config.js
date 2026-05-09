@@ -15,7 +15,7 @@ const MUSIC_LIST = [
 
 // 获取音乐完整路径（自动处理相对路径）
 function getMusicPath(filename) {
-    return `src/assets/music/${filename}`;
+    return `assets/music/${filename}`;
 }
 
 // 获取音乐列表（带完整路径）

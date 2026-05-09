@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS · AI 内容管理 | shiack</title>
-    <link rel="stylesheet" href="/src/assets/styles/cyber.css">
-    <link rel="stylesheet" href="/src/assets/styles/effects.css">
-    <script src="/src/js/modules/blog-data.js"></script>
-    <script src="/src/js/modules/music-config.js"></script>
-    <link rel="stylesheet" href="/src/components/music-player/music-player.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/base/effects.css">
+    <script src="/assets/js/modules/blog-data.js"></script>
+    <script src="/assets/js/modules/music-config.js"></script>
+    <link rel="stylesheet" href="/assets/css/components/music-player.css">
     <style>
         /* ── Schedule bar ─────────────────────────────────────────── */
         .schedule-bar {
@@ -192,14 +192,14 @@
         <footer class="reveal" style="animation-delay:.5s">✦ shiack · CMS 系统 | Powered by Claude AI ✦</footer>
     </div>
 
-    <script src="/src/components/music-player/music-player.js"></script>
+    <script src="/assets/js/components/music-player.js"></script>
     <script type="module">
-        import { injectThemeToggle, initTheme }   from '/src/js/core/theme.js';
-        import { mountNav }                       from '/src/js/core/nav.js';
-        import { escapeHtml, showToast }          from '/src/js/core/utils.js';
+        import { injectThemeToggle, initTheme }   from '/assets/js/core/theme.js';
+        import { mountNav }                       from '/assets/js/core/nav.js';
+        import { escapeHtml, showToast }          from '/assets/js/core/utils.js';
         import { initParticles, initScrollReveal,
                  initCardTilt, initGlitchText,
-                 initScanLine }                   from '/src/js/core/effects.js';
+                 initScanLine }                   from '/assets/js/core/effects.js';
 
         // ── Boot ──────────────────────────────────────────────────────────
         injectThemeToggle();
@@ -300,7 +300,7 @@
         // ── Load index ────────────────────────────────────────────────────
         async function loadArticles() {
             try {
-                const res = await fetch('/src/assets/posts/cms/cms-index.json');
+                const res = await fetch('/assets/posts/cms/cms-index.json');
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 articles   = (data.articles || []).sort((a, b) =>
@@ -355,8 +355,8 @@
 
         // ── Article grid — same .blog-card markup as blog-list ────────────
         function articleUrl(art) {
-            if (art.file) return `/src/pages/blogs/blog-detail.html?file=${encodeURIComponent(art.file)}`;
-            if (art.id)   return `/src/pages/blogs/blog-detail.html?localId=${encodeURIComponent(art.id)}`;
+            if (art.file) return `/pages/blog/post.html?file=${encodeURIComponent(art.file)}`;
+            if (art.id)   return `/pages/blog/post.html?localId=${encodeURIComponent(art.id)}`;
             return '#';
         }
 
