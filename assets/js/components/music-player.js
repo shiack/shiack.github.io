@@ -34,7 +34,15 @@ class MusicPlayer {
         this.loadPlaybackState(); // 加载之前保存的播放状态
     }
 
-    // 生成播放器HTML（根据是否有音乐）
+    /**
+     * 生成播放器 HTML 字符串。
+     *
+     * 根据 tracks 是否为空决定是否禁用控制按钮。
+     * 折叠视图只显示曲目标题和播放指示器；展开视图包含拖柄、
+     * 控制按钮、曲目信息、进度条和时间显示。
+     *
+     * @returns {string} 播放器完整 HTML 字符串
+     */
     generatePlayerHTML() {
         const hasMusic = this.tracks && this.tracks.length > 0;
         const defaultTitle = hasMusic ? this.tracks[0].title : '暂无音乐';
@@ -93,7 +101,15 @@ class MusicPlayer {
         `;
     }
 
-    // 获取音乐列表（从配置文件）
+    /**
+     * 从全局 MUSIC_LIST 变量读取播放列表并格式化。
+     *
+     * 依赖 music-config.js 在全局作用域定义 MUSIC_LIST 数组。
+     * 过滤掉缺少 file 或 title 字段的条目，并补全 path 字段。
+     *
+     * @returns {Array<{title:string,file:string,artist?:string,path:string}>|null}
+     *   格式化后的曲目数组；若列表为空或 MUSIC_LIST 未定义则返回 null
+     */
     getTracks() {
         let tracks = [];
         if (typeof MUSIC_LIST !== 'undefined' && Array.isArray(MUSIC_LIST)) {
@@ -105,7 +121,15 @@ class MusicPlayer {
         return tracks.length > 0 ? tracks : null;
     }
 
-    // 验证音乐文件是否存在（异步检查）
+    /**
+     * 异步验证播放列表中所有文件是否可访问。
+     *
+     * 对每首曲目发送 HEAD 请求；不可访问的文件会被从 tracks 中移除并打印警告。
+     * 若移除后 currentTrackIndex 越界，重置为 0 并刷新曲目信息显示。
+     * 在 initWithValidation() 渲染前调用，避免播放时才发现文件缺失。
+     *
+     * @returns {Promise<void>}
+     */
     async validateTracks() {
         if (!this.tracks || this.tracks.length === 0) return;
         
@@ -129,7 +153,15 @@ class MusicPlayer {
         }
     }
 
-    // 检查文件是否存在（使用 HTTP HEAD 请求，禁用缓存）
+    /**
+     * 检查指定 URL 的文件是否可访问（HTTP 200）。
+     *
+     * 使用 HEAD 方法且禁用缓存，确保每次都向服务器确认文件存在性。
+     * 网络错误视为文件不存在。
+     *
+     * @param {string} url - 要检查的文件 URL（绝对路径）
+     * @returns {Promise<boolean>} 文件可访问返回 true，否则返回 false
+     */
     async fileExists(url) {
         try {
             const response = await fetch(url, { 
@@ -148,12 +180,26 @@ class MusicPlayer {
         }
     }
 
-    // 获取音乐文件路径
+    /**
+     * 将音乐文件名转换为绝对 URL 路径。
+     *
+     * @param {string} filename - music-config.js 中定义的文件名（如 "track1.mp3"）
+     * @returns {string} 完整路径（如 "/assets/music/track1.mp3"）
+     */
     getMusicPath(filename) {
         return `/assets/music/${filename}`;
     }
 
-    // 加载播放状态
+    /**
+     * 从 localStorage 恢复上次的播放状态。
+     *
+     * 读取 key `musicPlayerState`（JSON），恢复字段：
+     * - currentTrackIndex：曲目索引（越界时忽略）
+     * - currentTime：保存至 this.savedCurrentTime，在 loadTrack 中用于跳转
+     * - isPlaying：保存至 this.shouldAutoPlay，在 loadTrack 中决定是否自动播放
+     *
+     * JSON 解析失败时静默忽略，不影响播放器初始化。
+     */
     loadPlaybackState() {
         try {
             const state = localStorage.getItem('musicPlayerState');
@@ -176,7 +222,12 @@ class MusicPlayer {
         }
     }
 
-    // 保存播放状态
+    /**
+     * 将当前播放状态持久化到 localStorage。
+     *
+     * 存储 key `musicPlayerState`，包含 currentTrackIndex、currentTime、isPlaying。
+     * 在播放/暂停、切换曲目、页面卸载（beforeunload）和页面隐藏（visibilitychange）时调用。
+     */
     savePlaybackState() {
         try {
             const state = {
@@ -190,12 +241,28 @@ class MusicPlayer {
         }
     }
 
-    // 初始化播放器
+    /**
+     * 初始化播放器（公共入口）。
+     *
+     * 代理至 initWithValidation()，保持外部调用接口简洁。
+     */
     init() {
         this.initWithValidation();
     }
 
-    // 带文件验证的初始化（异步）
+    /**
+     * 带文件验证的异步初始化流程。
+     *
+     * 执行顺序：
+     * 1. validateTracks() — HEAD 请求过滤不可访问文件
+     * 2. render() — 将 playerHTML 写入 #musicPlayerContainer
+     * 3. createAudioElement() + setupEventListeners() + loadTrack()
+     * 4. tryAutoPlay() — 触发自动播放（受浏览器策略限制）
+     *
+     * 若 tracks 为空，仅执行 render() + disableAllButtons()。
+     *
+     * @returns {Promise<void>}
+     */
     async initWithValidation() {
         // 如果有音乐列表，先验证文件是否存在
         if (this.tracks && this.tracks.length > 0) {
@@ -218,7 +285,17 @@ class MusicPlayer {
         }
     }
 
-    // 尝试自动播放（处理浏览器自动播放限制）
+    /**
+     * 尝试自动播放第一首曲目。
+     *
+     * 浏览器自动播放策略通常要求先有用户交互，否则 play() 返回被拒绝的 Promise。
+     * 为避免主题切换时重复触发，使用 localStorage key `musicPlayerAutoPlayTried` 记录。
+     *
+     * 策略：
+     * - 若音频已就绪（readyState >= 3），立即尝试 play()
+     * - 否则监听 canplay 事件后再尝试
+     * - 失败时绑定 click / keydown 一次性监听器，等用户交互后再播放
+     */
     tryAutoPlay() {
         // 检查是否已经尝试过自动播放（避免主题切换时重复触发）
         const hasTriedAutoPlay = localStorage.getItem('musicPlayerAutoPlayTried');
@@ -261,12 +338,25 @@ class MusicPlayer {
         }
     }
 
-    // 重置自动播放状态（用于页面刷新时重新尝试）
+    /**
+     * 删除 `musicPlayerAutoPlayTried` 标记，允许下次刷新时重新尝试自动播放。
+     *
+     * 当前未被内部调用，保留为外部工具方法（如测试或调试时手动重置）。
+     */
     resetAutoPlayState() {
         localStorage.removeItem('musicPlayerAutoPlayTried');
     }
 
-    // 加载曲目（只加载不播放）
+    /**
+     * 加载指定曲目（只加载，不自动播放）。
+     *
+     * 设置 audio.src 并调用 load()，更新标题/艺术家/时间显示。
+     * 若存在 savedCurrentTime（由 loadPlaybackState 恢复），在 loadedmetadata
+     * 事件后跳转到该位置；若 shouldAutoPlay 为 true，则在 canplay 后恢复播放。
+     * 恢复完成后清除 savedCurrentTime / shouldAutoPlay，避免重复触发。
+     *
+     * @param {number} index - tracks 数组的索引
+     */
     loadTrack(index) {
         const track = this.tracks[index];
         if (track && this.audioPlayer) {
@@ -315,13 +405,22 @@ class MusicPlayer {
         }
     }
 
-    // 禁用所有按钮（当没有音乐时）
+    /**
+     * 禁用所有 `.music-btn` 按钮。
+     *
+     * 在 tracks 为空（无可用音乐文件）时调用，防止用户操作引发错误。
+     */
     disableAllButtons() {
         const buttons = document.querySelectorAll('.music-btn');
         buttons.forEach(btn => btn.disabled = true);
     }
 
-    // 渲染播放器HTML
+    /**
+     * 将 playerHTML 写入页面。
+     *
+     * 优先写入 `#musicPlayerContainer`；若该元素不存在，则追加到 document.body 末尾。
+     * 在 initWithValidation() 中于文件验证完成后调用，确保 DOM 反映最终的可用曲目状态。
+     */
     render() {
         const container = document.getElementById('musicPlayerContainer');
         if (container) {
@@ -331,7 +430,19 @@ class MusicPlayer {
         }
     }
 
-    // 创建音频元素
+    /**
+     * 创建 `<audio>` 元素并注册核心事件。
+     *
+     * 音频设置：loop=false，volume=0.3（30% 作为背景音乐默认音量）。
+     * 注册事件：
+     * - loadedmetadata：更新时长显示
+     * - timeupdate：拖拽进度条期间暂停更新，防止抖动
+     * - ended：多曲目时自动切换下一首，单曲时显示暂停图标
+     * - error：打印警告
+     * - beforeunload / visibilitychange（hidden）：调用 savePlaybackState()
+     *
+     * 将元素追加到 document.body（不可见）。
+     */
     createAudioElement() {
         this.audioPlayer = document.createElement('audio');
         this.audioPlayer.loop = false;
@@ -382,7 +493,16 @@ class MusicPlayer {
             });
         }
 
-        // 设置事件监听器
+    /**
+     * 绑定播放器所有交互事件。
+     *
+     * 覆盖：播放/暂停按钮、上/下一首按钮、进度条点击跳转、
+     * 进度条 mousemove（tooltip 显示时间预览）、进度条 thumb 拖拽、
+     * 播放器拖柄拖拽、全局 mousemove / mouseup（拖拽更新与释放）、
+     * 键盘快捷键（Space 播放/暂停，←/→ 倒退/快进 5 秒）。
+     *
+     * 键盘事件在焦点位于 INPUT/TEXTAREA 时不触发，避免干扰文本输入。
+     */
         setupEventListeners() {
         // 播放/暂停按钮
         document.getElementById('musicToggle').addEventListener('click', () => {
@@ -455,7 +575,12 @@ class MusicPlayer {
         });
     }
 
-    // 播放/暂停切换
+    /**
+     * 切换播放/暂停状态。
+     *
+     * 当前正在播放时调用 pause()，否则调用 play()。
+     * 也用作键盘 Space 快捷键的处理函数。
+     */
     togglePlay() {
         if (this.isPlaying) {
             this.pause();
@@ -464,7 +589,15 @@ class MusicPlayer {
         }
     }
 
-    // 播放
+    /**
+     * 开始播放。
+     *
+     * 调用 audio.play()（返回 Promise）；成功时更新按钮图标为暂停符、
+     * 添加 `.playing` 类、保存状态。失败时（浏览器策略拒绝）仅打印警告，
+     * 不修改 isPlaying 状态。
+     *
+     * 若 audio.src 未设置则静默跳过。
+     */
     play() {
         if (this.audioPlayer.src) {
             this.audioPlayer.play().then(() => {
@@ -479,7 +612,12 @@ class MusicPlayer {
         }
     }
 
-    // 暂停
+    /**
+     * 暂停播放。
+     *
+     * 同步调用 audio.pause()，将按钮图标切换回播放符，
+     * 移除 `.playing` 类，并保存播放状态。
+     */
     pause() {
         this.audioPlayer.pause();
         this.isPlaying = false;
@@ -490,7 +628,12 @@ class MusicPlayer {
         this.savePlaybackState();
     }
 
-    // 上一首
+    /**
+     * 切换到上一首曲目。
+     *
+     * 索引循环：0 → tracks.length - 1。曲目少于 2 首时静默返回。
+     * 调用 loadAndPlayTrack() 并保存状态。
+     */
     prevTrack() {
         if (!this.tracks || this.tracks.length < 2) return;
         this.currentTrackIndex = (this.currentTrackIndex - 1 + this.tracks.length) % this.tracks.length;
@@ -498,7 +641,12 @@ class MusicPlayer {
         this.savePlaybackState(); // 保存播放状态
     }
 
-    // 下一首
+    /**
+     * 切换到下一首曲目。
+     *
+     * 索引循环：tracks.length - 1 → 0。曲目少于 2 首时静默返回。
+     * 调用 loadAndPlayTrack() 并保存状态。
+     */
     nextTrack() {
         if (!this.tracks || this.tracks.length < 2) return;
         this.currentTrackIndex = (this.currentTrackIndex + 1) % this.tracks.length;
@@ -506,7 +654,15 @@ class MusicPlayer {
         this.savePlaybackState(); // 保存播放状态
     }
 
-    // 加载并播放曲目
+    /**
+     * 加载并立即播放指定曲目。
+     *
+     * 与 loadTrack() 的区别：若切换前正在播放（wasPlaying），
+     * 则在 canplay 触发后自动调用 play()，使切换无缝衔接。
+     * 不受 savedCurrentTime / shouldAutoPlay 状态影响。
+     *
+     * @param {number} index - tracks 数组的索引
+     */
     loadAndPlayTrack(index) {
         const track = this.tracks[index];
         if (track && this.audioPlayer) {
@@ -530,7 +686,14 @@ class MusicPlayer {
         }
     }
 
-    // 跳转到指定时间
+    /**
+     * 跳转到指定播放位置。
+     *
+     * 对 time 做边界夹紧（0 ≤ time ≤ duration），然后设置 audio.currentTime
+     * 并同步更新进度条位置。
+     *
+     * @param {number} time - 目标时间（秒）
+     */
     seekTo(time) {
         const duration = this.audioPlayer.duration;
         const newTime = Math.max(0, Math.min(duration, time));
@@ -538,7 +701,14 @@ class MusicPlayer {
         this.updateProgress(newTime);
     }
 
-    // 更新进度条
+    /**
+     * 更新进度条宽度和拖拽 thumb 位置。
+     *
+     * duration 为 0 或 NaN 时以 1 代替，防止除零。
+     * 由 audio timeupdate 事件和拖拽 mousemove 事件调用。
+     *
+     * @param {number} currentTime - 当前播放位置（秒）
+     */
     updateProgress(currentTime) {
         const duration = this.audioPlayer.duration || 1;
         const percent = (currentTime / duration) * 100;
@@ -546,13 +716,24 @@ class MusicPlayer {
         document.getElementById('musicProgressThumb').style.left = percent + '%';
     }
 
-    // 更新时间显示
+    /**
+     * 更新时间文本显示（"当前 / 总时长"）。
+     *
+     * @param {number} current  - 当前播放位置（秒）
+     * @param {number} duration - 曲目总时长（秒）
+     */
     updateTimeDisplay(current, duration) {
         const timeStr = this.formatTime(current) + ' / ' + this.formatTime(duration);
         document.getElementById('musicTime').textContent = timeStr;
     }
 
-    // 更新曲目信息显示
+    /**
+     * 刷新 DOM 中的曲目标题、艺术家和曲目计数显示。
+     *
+     * 在 validateTracks() 过滤掉不存在的文件后调用，确保 UI 与实际 tracks 一致。
+     * 若 tracks 为空，则同时调用 disableAllButtons()。
+     * 对缺失的 DOM 元素做防御性检查（null 判断），适配初始化前调用的场景。
+     */
     updateTrackInfo() {
         const track = this.tracks && this.tracks.length > 0 ? this.tracks[this.currentTrackIndex] : null;
         const title = track ? track.title : '暂无音乐';
@@ -588,7 +769,14 @@ class MusicPlayer {
         }
     }
 
-    // 格式化时间
+    /**
+     * 将秒数格式化为 "MM:SS" 字符串。
+     *
+     * NaN 或 Infinity 时返回 "00:00"（音频尚未加载时的安全值）。
+     *
+     * @param {number} seconds - 时长（秒）
+     * @returns {string} 格式化时间字符串，如 "03:45"
+     */
     formatTime(seconds) {
         if (isNaN(seconds) || !isFinite(seconds)) {
             return '00:00';
@@ -598,14 +786,29 @@ class MusicPlayer {
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    // 开始进度条拖拽
+    /**
+     * 开始进度条 thumb 的拖拽操作。
+     *
+     * 设置 isDraggingProgress = true 并在 thumb 上添加 `.dragging` 类（CSS 放大效果）。
+     * 实际位置更新在 onMouseMove() 中完成，拖拽释放在 stopDrag() 中处理。
+     *
+     * @param {MouseEvent} e
+     */
     startProgressDrag(e) {
         e.preventDefault();
         this.isDraggingProgress = true;
         document.getElementById('musicProgressThumb').classList.add('dragging');
     }
 
-    // 开始播放器拖拽
+    /**
+     * 开始播放器浮层的拖拽操作。
+     *
+     * 记录鼠标点击位置相对于播放器左上角的偏移（dragOffset），
+     * 在 onMouseMove() 中据此计算新坐标。同时添加 `.dragging` CSS 类
+     * 以禁用 CSS transition，避免拖拽时出现延迟跟随效果。
+     *
+     * @param {MouseEvent} e
+     */
     startPlayerDrag(e) {
         e.preventDefault();
         this.isDraggingPlayer = true;
@@ -617,7 +820,15 @@ class MusicPlayer {
         this.dragOffset.y = e.clientY - rect.top;
     }
 
-    // 鼠标移动处理
+    /**
+     * 处理全局 mousemove 事件（进度条拖拽 + 播放器位置拖拽）。
+     *
+     * 进度条拖拽：将鼠标 X 位置映射为百分比，计算新时间并同步更新 audio.currentTime 和 UI。
+     * 播放器拖拽：计算新坐标（含 10px 边距的边界夹紧），通过 left/top inline style 定位；
+     *   同时清除 bottom/right/transform，防止与 CSS 默认定位冲突。
+     *
+     * @param {MouseEvent} e
+     */
     onMouseMove(e) {
         if (this.isDraggingProgress) {
             const progressBar = document.getElementById('musicProgress');
@@ -648,7 +859,12 @@ class MusicPlayer {
         }
     }
 
-    // 停止拖拽
+    /**
+     * 结束所有拖拽操作（全局 mouseup 触发）。
+     *
+     * 将 isDraggingProgress / isDraggingPlayer 重置为 false，
+     * 并移除对应元素上的 `.dragging` CSS 类。
+     */
     stopDrag() {
         if (this.isDraggingProgress) {
             this.isDraggingProgress = false;

@@ -90,13 +90,13 @@
 .es-btn:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background: var(--interactive-bg);
+    background: rgba(0, 255, 204, .06);
 }
 
 .es-btn.active {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background: var(--interactive-bg-active);
+    background: rgba(0, 255, 204, .09);
 }
 
 /* RSS button — dedicated orange tint */
@@ -112,7 +112,7 @@
 .theme-workspace .es-btn.active {
     border-color: var(--accent-color);
     color: var(--accent-color);
-    background: var(--interactive-bg);
+    background: rgba(29, 78, 216, .06);
 }
 
 .theme-workspace .es-btn-rss:hover {
@@ -176,8 +176,8 @@
 
 .es-input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--focus-ring),
-                0 0 8px var(--focus-ring);
+    box-shadow: 0 0 0 2px rgba(0, 255, 204, .13),
+                0 0 8px rgba(0, 255, 204, .17);
 }
 
 /* workspace input */
@@ -206,7 +206,7 @@
     padding: .48rem 1.2rem;
     border-radius: var(--radius);
     border: 1px solid var(--primary-color);
-    background: var(--interactive-bg);
+    background: rgba(0, 255, 204, .09);
     color: var(--primary-color);
     font-family: monospace;
     font-size: .84rem;
@@ -218,8 +218,8 @@
 }
 
 .es-submit:hover:not(:disabled) {
-    background: var(--interactive-bg-active);
-    box-shadow: 0 0 14px var(--focus-ring);
+    background: rgba(0, 255, 204, .17);
+    box-shadow: 0 0 14px rgba(0, 255, 204, .35);
     transform: translateY(-1px);
 }
 
@@ -236,24 +236,24 @@
 
 .theme-workspace .es-submit {
     border-color: var(--accent-color);
-    background: var(--interactive-bg);
+    background: rgba(29, 78, 216, .08);
     color: var(--accent-color);
 }
 
 .theme-workspace .es-submit:hover:not(:disabled) {
-    background: var(--interactive-bg-active);
-    box-shadow: 0 0 12px var(--focus-ring);
+    background: rgba(29, 78, 216, .14);
+    box-shadow: 0 0 12px rgba(29, 78, 216, .22);
 }
 
 .theme-nature .es-submit {
     border-color: var(--primary-color);
-    background: var(--interactive-bg);
+    background: rgba(61, 78, 54, .08);
     color: var(--primary-color);
 }
 
 .theme-nature .es-submit:hover:not(:disabled) {
-    background: var(--interactive-bg-active);
-    box-shadow: var(--neon-shadow);
+    background: rgba(61, 78, 54, .14);
+    box-shadow: 0 2px 8px rgba(61, 78, 54, .18);
 }
 
 /* ── Hint messages ─────────────────────────────────────────────── */
@@ -283,7 +283,7 @@
 .es-hint.info {
     color: var(--text-muted);
     border-left-color: var(--border-color);
-    background: var(--overlay-bg);
+    background: rgba(255, 255, 255, .03);
 }
 
 /* workspace hint colors stay the same (contrast ok on white bg) */

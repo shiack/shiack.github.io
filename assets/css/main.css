@@ -1,6 +1,63 @@
 /* ============================================
-   cyber.css - 赛博风格全局样式
+   main.css - 全局样式 + 三套主题配色
    ============================================ */
+
+/* ==================== 字体加载 ==================== */
+
+/* 方案 A：Google Fonts CDN（默认启用） */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* 方案 B：本地字体（需下载 woff2 文件到 assets/fonts/ 后取消注释）
+@font-face {
+    font-family: 'Sora';
+    src: url('/assets/fonts/Sora-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Sora';
+    src: url('/assets/fonts/Sora-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Sora';
+    src: url('/assets/fonts/Sora-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Sora';
+    src: url('/assets/fonts/Sora-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/assets/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/assets/fonts/JetBrainsMono-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+*/
 
 * {
     margin: 0;
@@ -237,6 +294,18 @@
     --shadow-color: 0 1px 3px rgba(0, 0, 0, 0.15);
     --radius: 6px;
     --font-family: 'Inter', system-ui, sans-serif;
+    /* ── extended tokens ── */
+    --focus-ring: rgba(29, 78, 216, 0.35);
+    --danger-color: #DC2626;
+    --success-color: #16A34A;
+    --warn-color: #D97706;
+    --interactive-bg: rgba(29, 78, 216, 0.06);
+    --interactive-bg-active: rgba(29, 78, 216, 0.12);
+    --overlay-bg: rgba(0, 0, 0, 0.05);
+    --overlay-bg-hover: rgba(0, 0, 0, 0.09);
+    --neon-shadow: 0 4px 14px rgba(29, 78, 216, 0.18);
+    --tag-shadow: 0 0 8px rgba(29, 78, 216, 0.25);
+    --code-bg: rgba(0, 0, 0, 0.04);
 }
 
 /* 主题2：赛博朋克（Cyberpunk Matrix）*/
@@ -256,6 +325,18 @@
     --shadow-color: 0 0 10px rgba(0, 255, 204, 0.5);
     --radius: 4px;
     --font-family: 'JetBrains Mono', 'Inter', monospace;
+    /* ── extended tokens ── */
+    --focus-ring: rgba(0, 255, 204, 0.35);
+    --danger-color: #FF4466;
+    --success-color: #00FFCC;
+    --warn-color: #F5A623;
+    --interactive-bg: rgba(0, 255, 204, 0.07);
+    --interactive-bg-active: rgba(0, 255, 204, 0.13);
+    --overlay-bg: rgba(0, 0, 0, 0.30);
+    --overlay-bg-hover: rgba(0, 0, 0, 0.50);
+    --neon-shadow: 0 8px 32px rgba(0, 255, 204, 0.22);
+    --tag-shadow: 0 0 8px rgba(0, 255, 204, 0.50);
+    --code-bg: rgba(0, 255, 204, 0.06);
 }
 
 /* 主题3：简约小清新朴素风（Soft Nature）*/
@@ -275,6 +356,18 @@
     --shadow-color: 0 2px 8px rgba(0, 0, 0, 0.06);
     --radius: 16px;
     --font-family: 'Georgia', 'Noto Serif SC', serif;
+    /* ── extended tokens ── */
+    --focus-ring: rgba(61, 78, 54, 0.25);
+    --danger-color: #B45309;
+    --success-color: #3D7A3D;
+    --warn-color: #8B6914;
+    --interactive-bg: rgba(61, 78, 54, 0.06);
+    --interactive-bg-active: rgba(61, 78, 54, 0.11);
+    --overlay-bg: rgba(0, 0, 0, 0.04);
+    --overlay-bg-hover: rgba(0, 0, 0, 0.07);
+    --neon-shadow: 0 4px 14px rgba(61, 78, 54, 0.14);
+    --tag-shadow: 0 0 6px rgba(61, 78, 54, 0.20);
+    --code-bg: rgba(61, 78, 54, 0.06);
 }
 
 /* ==================== 初始化动画遮罩 ==================== */
@@ -846,14 +939,26 @@
 
 body {
     background: radial-gradient(circle at 20% 30%, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
-    font-family: 'Fira Code', 'Courier New', 'JetBrains Mono', monospace;
+    font-family: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.8;
     padding: 2rem 1.5rem;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
     transition: all 0.5s ease;
+    font-size: 16px;
+}
+
+/* 主题特定字体基准 */
+.theme-cyber body {
+    font-size: 16px;
+}
+.theme-workspace body {
+    font-size: 16px;
+}
+.theme-nature body {
+    font-size: 16.5px;
 }
 
 body::before {
@@ -909,10 +1014,10 @@ body::after {
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--border-color);
     border-radius: 24px;
-    box-shadow: 
-        0 10px 40px -10px rgba(0, 0, 0, 0.6), 
+    box-shadow:
+        0 10px 40px -10px rgba(0, 0, 0, 0.6),
         0 0 0 1px var(--border-color) inset,
-        0 0 30px rgba(0, 255, 255, 0.05);
+        var(--neon-shadow);
     padding: 2.5rem 3rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 2rem;
@@ -1021,17 +1126,15 @@ body::after {
     border: 1px solid var(--border-color);
     border-radius: 40px;
     padding: 0.35rem 1.2rem;
-    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--text-secondary);
-    font-weight: 500;
 }
 
 .tag:hover, .tag.active {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--interactive-bg);
     border-color: var(--primary-color);
-    box-shadow: 0 0 15px var(--primary-color);
+    box-shadow: var(--tag-shadow);
     color: var(--primary-color);
     transform: translateY(-2px);
 }
@@ -1077,23 +1180,15 @@ body::after {
 }
 
 .blog-title {
-    font-size: 1.35rem;
     margin-bottom: 0.75rem;
     color: var(--text-color);
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0.3px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
 
 .blog-title-link {
-    font-size: 1.35rem;
     margin-bottom: 0.75rem;
     color: var(--text-color);
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0.3px;
     text-decoration: none;
     display: block;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1121,7 +1216,6 @@ body::after {
 }
 
 .blog-meta {
-    font-size: 0.8rem;
     color: var(--text-secondary);
     margin-bottom: 0.75rem;
 }
@@ -1138,18 +1232,16 @@ body::after {
     border: 1px solid var(--border-color);
     border-radius: 30px;
     padding: 0.2rem 0.8rem;
-    font-size: 0.75rem;
     color: var(--text-secondary);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
 }
 
 .mini-tag:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--interactive-bg);
     border-color: var(--primary-color);
     color: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 0 12px var(--primary-color);
+    box-shadow: var(--tag-shadow);
 }
 
 .read-more, .back-link, .btn-blog {
@@ -1172,7 +1264,7 @@ body::after {
 
 .btn-blog {
     margin-top: 1.2rem;
-    border: 1px solid #0ff;
+    border: 1px solid var(--primary-color);
     padding: 0.7rem 2rem;
     border-radius: 40px;
     position: relative;
@@ -1187,7 +1279,7 @@ body::after {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, var(--interactive-bg-active), transparent);
     transition: left 0.5s;
 }
 
@@ -1197,7 +1289,7 @@ body::after {
 
 .btn-blog:hover, .read-more:hover, .back-link:hover {
     text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
-    background: rgba(0, 255, 255, 0.15);
+    background: var(--interactive-bg);
     transform: translateY(-2px);
 }
 
@@ -1215,22 +1307,17 @@ body::after {
     color: var(--primary-color);
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
-    font-weight: 600;
 }
 
-.markdown-content h1 { 
-    font-size: 1.8rem; 
-    border-left: 4px solid var(--primary-color); 
-    padding-left: 1rem; 
+.markdown-content h1 {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
     margin-top: 2rem;
 }
-.markdown-content h2 { 
-    font-size: 1.4rem; 
+.markdown-content h2 {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.3rem;
 }
-.markdown-content h3 { font-size: 1.2rem; }
-.markdown-content h4 { font-size: 1.1rem; }
 
 .markdown-content pre {
     background: var(--card-bg);
@@ -1243,11 +1330,9 @@ body::after {
 }
 
 .markdown-content code {
-    font-family: 'Fira Code', 'JetBrains Mono', monospace;
     background: var(--bg-gradient-mid);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-size: 0.9em;
     color: var(--text-color);
 }
 
@@ -1795,7 +1880,7 @@ footer {
     border-color: var(--primary-color);
     background: var(--bg-gradient-mid);
     transform: translateX(5px);
-    box-shadow: 0 0 15px var(--primary-color);
+    box-shadow: var(--neon-shadow);
 }
 
 .related-title {
@@ -1822,14 +1907,15 @@ footer {
     align-items: center;
     gap: 0.8rem;
     padding: 0.7rem;
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--overlay-bg);
     border-radius: 10px;
+    border: 1px solid var(--border-color);
     transition: all 0.3s;
 }
 
 .recommend-item:hover {
     border: 1px solid var(--accent-color);
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-bg-hover);
     transform: translateX(5px);
 }
 
@@ -2019,6 +2105,169 @@ footer {
 @keyframes progress-flow {
     0% { width: 0%; }
     100% { width: 100%; }
+}
+
+/* ==================== 博客字体系统 ==================== */
+
+/* 标题字体栈 */
+h1, h2, h3, h4, h5, h6,
+.blog-title,
+.blog-title-link,
+.logo {
+    font-family: 'Sora', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+/* 代码字体栈 */
+code,
+pre,
+.markdown-content code,
+.markdown-content pre,
+kbd,
+samp,
+tt {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* 标题字号与行高 */
+h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 1.45rem;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.2rem;
+    line-height: 1.35;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+/* 正文 */
+p, li {
+    font-size: 1rem;
+    line-height: 1.8;
+    font-weight: 400;
+}
+
+li {
+    line-height: 1.75;
+}
+
+/* 行内代码 */
+code {
+    font-size: 0.88em;
+    font-weight: 400;
+}
+
+/* 代码块 */
+pre code {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+/* 标签 */
+.tag {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+.mini-tag {
+    font-size: 0.72rem;
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+/* 博客列表卡片 */
+.blog-card .blog-title-link {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.blog-summary {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    font-weight: 400;
+}
+
+.blog-meta {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* 主题特定字体调整 */
+.theme-cyber h1,
+.theme-cyber h2,
+.theme-cyber h3 {
+    letter-spacing: 0.02em;
+}
+
+.theme-nature h1,
+.theme-nature h2,
+.theme-nature h3,
+.theme-nature p {
+    line-height: 1.85;
+}
+
+/* Markdown 内容字体覆盖 */
+.markdown-content h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 800;
+}
+
+.markdown-content h2 {
+    font-size: 1.45rem;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.markdown-content h3 {
+    font-size: 1.2rem;
+    line-height: 1.35;
+    font-weight: 600;
+}
+
+.markdown-content h4 {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.markdown-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.markdown-content li {
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.markdown-content code {
+    font-size: 0.88em;
+    background: var(--code-bg);
+}
+
+.markdown-content pre code {
+    font-size: 0.875rem;
+    line-height: 1.6;
 }
 
 @media (max-width: 700px) {
