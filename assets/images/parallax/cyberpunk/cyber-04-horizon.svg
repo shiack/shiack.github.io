@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Faint city glow on horizon -->
+    <linearGradient id="horizonGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="transparent"/>
+      <stop offset="68%"  stop-color="#180830"  stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#0c0420"  stop-opacity="0.85"/>
+    </linearGradient>
+    <!-- Warm orange bloom – industrial district -->
+    <radialGradient id="warmBloom" cx="30%" cy="100%" r="30%">
+      <stop offset="0%"   stop-color="#ff6600" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <!-- Cold cyan bloom – tech district -->
+    <radialGradient id="cyanBloom" cx="70%" cy="100%" r="28%">
+      <stop offset="0%"   stop-color="#00ccff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="3.5"/>
+    </filter>
+  </defs>
+
+  <!-- Atmosphere base -->
+  <rect width="1600" height="500" fill="url(#horizonGlow)"/>
+  <rect width="1600" height="500" fill="url(#warmBloom)"/>
+  <rect width="1600" height="500" fill="url(#cyanBloom)"/>
+
+  <!-- === FAR HORIZON SKYLINE (detailed silhouettes) === -->
+
+  <!-- Left cluster – low dense blocks -->
+  <rect x="0"    y="340" width="38"  height="160" fill="#0a0614" opacity="0.90"/>
+  <rect x="30"   y="325" width="22"  height="175" fill="#0c0718" opacity="0.88"/>
+  <rect x="45"   y="355" width="30"  height="145" fill="#08050f" opacity="0.90"/>
+  <rect x="68"   y="316" width="16"  height="184" fill="#0d0818" opacity="0.85"/>
+  <rect x="78"   y="338" width="28"  height="162" fill="#0a0614" opacity="0.88"/>
+  <rect x="98"   y="296" width="20"  height="204" fill="#0e091c" opacity="0.87"/>
+  <rect x="112"  y="318" width="34"  height="182" fill="#08050f" opacity="0.90"/>
+  <rect x="140"  y="345" width="26"  height="155" fill="#0c0718" opacity="0.85"/>
+  <rect x="160"  y="310" width="18"  height="190" fill="#0a0614" opacity="0.88"/>
+  <rect x="172"  y="332" width="30"  height="168" fill="#0d0818" opacity="0.87"/>
+  <rect x="196"  y="286" width="22"  height="214" fill="#0f0a1e" opacity="0.88"/>
+  <rect x="212"  y="352" width="36"  height="148" fill="#08050f" opacity="0.90"/>
+
+  <!-- Antenna/spire on tallest -->
+  <rect x="206"  y="268" width="3"   height="18"  fill="#1a0c2e" opacity="0.80"/>
+  <rect x="99"   y="280" width="2"   height="16"  fill="#1a0c2e" opacity="0.78"/>
+
+  <!-- Left-centre cluster – taller, more varied -->
+  <rect x="240"  y="295" width="44"  height="205" fill="#0e0920" opacity="0.88"/>
+  <rect x="278"  y="272" width="28"  height="228" fill="#120a24" opacity="0.87"/>
+  <rect x="300"  y="310" width="36"  height="190" fill="#0a0618" opacity="0.90"/>
+  <rect x="330"  y="288" width="22"  height="212" fill="#0e0920" opacity="0.86"/>
+  <rect x="346"  y="342" width="40"  height="158" fill="#08050f" opacity="0.90"/>
+  <rect x="380"  y="275" width="26"  height="225" fill="#120a24" opacity="0.87"/>
+  <rect x="400"  y="315" width="50"  height="185" fill="#0a0618" opacity="0.88"/>
+  <rect x="444"  y="295" width="20"  height="205" fill="#0e0920" opacity="0.86"/>
+  <rect x="458"  y="260" width="30"  height="240" fill="#140c28" opacity="0.88"/>
+  <rect x="482"  y="330" width="38"  height="170" fill="#08050f" opacity="0.90"/>
+
+  <!-- Spires -->
+  <polygon points="279,258 283,272 275,272" fill="#1a0c30" opacity="0.80"/>
+  <polygon points="459,244 462,260 456,260" fill="#1a0c30" opacity="0.78"/>
+
+  <!-- Centre cluster – medium height, dense -->
+  <rect x="520"  y="305" width="48"  height="195" fill="#0c0820" opacity="0.88"/>
+  <rect x="562"  y="278" width="32"  height="222" fill="#0f0924" opacity="0.87"/>
+  <rect x="588"  y="318" width="44"  height="182" fill="#08060e" opacity="0.90"/>
+  <rect x="626"  y="295" width="26"  height="205" fill="#0d0820" opacity="0.85"/>
+  <rect x="646"  y="332" width="40"  height="168" fill="#0a0618" opacity="0.88"/>
+  <rect x="680"  y="288" width="30"  height="212" fill="#0e0a22" opacity="0.86"/>
+  <rect x="704"  y="310" width="46"  height="190" fill="#08050e" opacity="0.90"/>
+  <rect x="744"  y="270" width="24"  height="230" fill="#120b26" opacity="0.87"/>
+  <rect x="762"  y="295" width="38"  height="205" fill="#0c0820" opacity="0.88"/>
+  <rect x="794"  y="340" width="30"  height="160" fill="#0a0618" opacity="0.88"/>
+  <rect x="818"  y="280" width="44"  height="220" fill="#0f0924" opacity="0.87"/>
+
+  <!-- Spires centre -->
+  <rect x="563"  y="265" width="2"   height="13"  fill="#200e34" opacity="0.78"/>
+  <rect x="745"  y="256" width="3"   height="14"  fill="#200e34" opacity="0.80"/>
+
+  <!-- Right-centre cluster -->
+  <rect x="866"  y="308" width="42"  height="192" fill="#0c0820" opacity="0.88"/>
+  <rect x="902"  y="285" width="28"  height="215" fill="#0e0922" opacity="0.86"/>
+  <rect x="924"  y="320" width="50"  height="180" fill="#08050e" opacity="0.90"/>
+  <rect x="968"  y="295" width="22"  height="205" fill="#0d0820" opacity="0.85"/>
+  <rect x="984"  y="265" width="36"  height="235" fill="#120c28" opacity="0.87"/>
+  <rect x="1014" y="310" width="44"  height="190" fill="#0a0618" opacity="0.88"/>
+  <rect x="1052" y="288" width="30"  height="212" fill="#0e0a22" opacity="0.86"/>
+  <rect x="1076" y="330" width="38"  height="170" fill="#08060e" opacity="0.90"/>
+  <rect x="1108" y="278" width="26"  height="222" fill="#100a24" opacity="0.87"/>
+  <rect x="1128" y="300" width="48"  height="200" fill="#0c0820" opacity="0.88"/>
+
+  <!-- Spires right-centre -->
+  <polygon points="985,249 988,265 982,265" fill="#1e0e30" opacity="0.80"/>
+  <rect x="1109" y="264" width="2"   height="14"  fill="#1e0e30" opacity="0.78"/>
+
+  <!-- Right cluster -->
+  <rect x="1180" y="318" width="40"  height="182" fill="#0a0618" opacity="0.88"/>
+  <rect x="1214" y="295" width="26"  height="205" fill="#0d0820" opacity="0.86"/>
+  <rect x="1234" y="270" width="44"  height="230" fill="#120b26" opacity="0.87"/>
+  <rect x="1272" y="305" width="32"  height="195" fill="#0e0922" opacity="0.86"/>
+  <rect x="1298" y="338" width="50"  height="162" fill="#08050e" opacity="0.90"/>
+  <rect x="1342" y="288" width="24"  height="212" fill="#0f0a24" opacity="0.87"/>
+  <rect x="1360" y="312" width="40"  height="188" fill="#0c0820" opacity="0.88"/>
+  <rect x="1394" y="295" width="30"  height="205" fill="#0a0618" opacity="0.88"/>
+  <rect x="1418" y="340" width="44"  height="160" fill="#08060e" opacity="0.90"/>
+  <rect x="1456" y="280" width="22"  height="220" fill="#120c28" opacity="0.87"/>
+  <rect x="1472" y="310" width="38"  height="190" fill="#0d0820" opacity="0.86"/>
+  <rect x="1504" y="325" width="48"  height="175" fill="#0a0618" opacity="0.88"/>
+
+  <!-- Far right -->
+  <rect x="1546" y="305" width="30"  height="195" fill="#0e0922" opacity="0.86"/>
+  <rect x="1570" y="330" width="30"  height="170" fill="#08050e" opacity="0.90"/>
+
+  <!-- Spires right -->
+  <polygon points="1235,254 1238,270 1232,270" fill="#1e0e30" opacity="0.80"/>
+  <rect x="1457" y="264" width="2"   height="16"  fill="#1e0e30" opacity="0.78"/>
+
+  <!-- Subtle window glow dots (scattered, very small) -->
+  <g opacity="0.55" filter="url(#softBlur)">
+    <!-- warm yellow windows -->
+    <rect x="254" y="305" width="2" height="2" fill="#ffcc00"/>
+    <rect x="262" y="318" width="2" height="2" fill="#ffcc00"/>
+    <rect x="298" y="284" width="2" height="2" fill="#ffcc00"/>
+    <rect x="412" y="296" width="2" height="2" fill="#ffcc00"/>
+    <rect x="466" y="270" width="2" height="2" fill="#ffcc00"/>
+    <rect x="532" y="315" width="2" height="2" fill="#ffcc00"/>
+    <rect x="710" y="320" width="2" height="2" fill="#ffcc00"/>
+    <rect x="768" y="302" width="2" height="2" fill="#ffcc00"/>
+    <rect x="992" y="275" width="2" height="2" fill="#ffcc00"/>
+    <rect x="1088" y="288" width="2" height="2" fill="#ffcc00"/>
+    <rect x="1244" y="280" width="2" height="2" fill="#ffcc00"/>
+    <rect x="1348" y="298" width="2" height="2" fill="#ffcc00"/>
+    <rect x="1462" y="290" width="2" height="2" fill="#ffcc00"/>
+    <!-- cyan windows -->
+    <rect x="350" y="292" width="2" height="2" fill="#00ffcc"/>
+    <rect x="590" y="330" width="2" height="2" fill="#00ffcc"/>
+    <rect x="830" y="288" width="2" height="2" fill="#00ffcc"/>
+    <rect x="1140" y="308" width="2" height="2" fill="#00ffcc"/>
+    <rect x="1378" y="302" width="2" height="2" fill="#00ffcc"/>
+    <rect x="1510" y="335" width="2" height="2" fill="#00ffcc"/>
+    <!-- magenta windows -->
+    <rect x="488" y="310" width="2" height="2" fill="#ff0088"/>
+    <rect x="648" y="298" width="2" height="2" fill="#ff0088"/>
+    <rect x="912" y="295" width="2" height="2" fill="#ff0088"/>
+    <rect x="1194" y="320" width="2" height="2" fill="#ff0088"/>
+    <rect x="1430" y="285" width="2" height="2" fill="#ff0088"/>
+  </g>
+
+  <!-- Thin ground haze -->
+  <rect x="0" y="455" width="1600" height="45" fill="#0c0420" opacity="0.55"/>
+</svg>

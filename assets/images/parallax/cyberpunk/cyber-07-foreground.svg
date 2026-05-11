@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="fg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#100c28"/>
+      <stop offset="100%" stop-color="#060410"/>
+    </linearGradient>
+    <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0c0a22"/>
+      <stop offset="100%" stop-color="#04030e"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <!-- Billboard scan animation -->
+    <linearGradient id="scanBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#00ffcc" stop-opacity="0"/>
+      <stop offset="30%"  stop-color="#00ffcc" stop-opacity="0.25"/>
+      <stop offset="60%"  stop-color="#00ffcc" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== LARGE LEFT FOREGROUND BUILDING ===== -->
+  <!-- Partial building cut off at left edge -->
+  <rect x="-20"  y="80"  width="180" height="420" fill="url(#fg1)"/>
+  <!-- Vertical structural column highlight -->
+  <rect x="155"  y="80"  width="6"   height="420" fill="#1a1438" opacity="0.80"/>
+  <!-- Roof detail -->
+  <rect x="-20"  y="66"  width="180" height="14"  fill="#161240" opacity="0.95"/>
+  <rect x="-20"  y="64"  width="180" height="3"   fill="#ff0088" opacity="0.72" filter="url(#glow)"/>
+  <!-- Water tower left -->
+  <rect x="18"   y="38"  width="40"  height="28"  fill="#100e30" opacity="0.90"/>
+  <rect x="15"   y="36"  width="46"  height="3"   fill="#1a1440"/>
+  <!-- Rounded tank top -->
+  <ellipse cx="38" cy="36" rx="23" ry="5" fill="#120e2c" opacity="0.90"/>
+  <!-- Tank legs -->
+  <rect x="22"   y="66"  width="4"   height="16"  fill="#0e0c28"/>
+  <rect x="50"   y="66"  width="4"   height="16"  fill="#0e0c28"/>
+  <!-- Warning blink on water tower -->
+  <circle cx="38" cy="32"  r="3"   fill="#ff3333" opacity="0.80">
+    <animate attributeName="opacity" values="0.1;0.9;0.1" dur="2.2s" begin="0.8s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Window facade left building -->
+  <g fill="#ffcc00" opacity="0.32">
+    <rect x="10"   y="92"  width="12" height="8"/><rect x="28"   y="92"  width="12" height="8"/><rect x="46"   y="92"  width="12" height="8"/><rect x="64"   y="92"  width="12" height="8"/><rect x="82"   y="92"  width="12" height="8"/><rect x="100"  y="92"  width="12" height="8"/><rect x="118"  y="92"  width="12" height="8"/><rect x="136"  y="92"  width="12" height="8"/>
+    <rect x="10"   y="108" width="12" height="8"/>                                              <rect x="46"   y="108" width="12" height="8"/>                                              <rect x="82"   y="108" width="12" height="8"/>                                              <rect x="118"  y="108" width="12" height="8"/>
+    <rect x="28"   y="124" width="12" height="8"/><rect x="64"   y="124" width="12" height="8"/><rect x="100"  y="124" width="12" height="8"/><rect x="136"  y="124" width="12" height="8"/>
+    <rect x="10"   y="140" width="12" height="8"/><rect x="46"   y="140" width="12" height="8"/><rect x="82"   y="140" width="12" height="8"/>
+    <rect x="28"   y="156" width="12" height="8"/>                                              <rect x="64"   y="156" width="12" height="8"/><rect x="118"  y="156" width="12" height="8"/>
+    <rect x="10"   y="172" width="12" height="8"/><rect x="46"   y="172" width="12" height="8"/><rect x="100"  y="172" width="12" height="8"/><rect x="136"  y="172" width="12" height="8"/>
+    <rect x="28"   y="188" width="12" height="8"/><rect x="82"   y="188" width="12" height="8"/>
+    <rect x="10"   y="204" width="12" height="8"/><rect x="64"   y="204" width="12" height="8"/><rect x="118"  y="204" width="12" height="8"/>
+    <rect x="46"   y="220" width="12" height="8"/><rect x="100"  y="220" width="12" height="8"/><rect x="136"  y="220" width="12" height="8"/>
+  </g>
+  <g fill="#00ffcc" opacity="0.38">
+    <rect x="28"   y="92"  width="12" height="8"/>
+    <rect x="28"   y="108" width="12" height="8"/><rect x="64"   y="108" width="12" height="8"/><rect x="100"  y="108" width="12" height="8"/><rect x="136"  y="108" width="12" height="8"/>
+    <rect x="10"   y="124" width="12" height="8"/>
+    <rect x="118"  y="140" width="12" height="8"/>
+    <rect x="10"   y="156" width="12" height="8"/>
+    <rect x="64"   y="172" width="12" height="8"/>
+  </g>
+  <!-- Fire escape left building -->
+  <g fill="none" stroke="#1e1848" stroke-width="1.5" opacity="0.70">
+    <rect x="88" y="90" width="18" height="20" fill="none"/>
+    <line x1="88" y1="100" x2="106" y2="100"/>
+    <rect x="88" y="116" width="18" height="20" fill="none"/>
+    <line x1="88" y1="126" x2="106" y2="126"/>
+    <rect x="88" y="142" width="18" height="20" fill="none"/>
+    <line x1="88" y1="152" x2="106" y2="152"/>
+    <rect x="88" y="168" width="18" height="20" fill="none"/>
+    <line x1="88" y1="178" x2="106" y2="178"/>
+  </g>
+  <!-- Large billboard left -->
+  <rect x="0"    y="258" width="148" height="80"  fill="#080616" opacity="0.95" rx="3"/>
+  <rect x="0"    y="258" width="148" height="3"   fill="#ff0088" opacity="0.88" filter="url(#glow)"/>
+  <rect x="0"    y="335" width="148" height="3"   fill="#ff0088" opacity="0.88" filter="url(#glow)"/>
+  <rect x="145"  y="261" width="3"   height="74"  fill="#ff0088" opacity="0.88" filter="url(#glow)"/>
+  <text x="10"   y="298" font-family="monospace" font-size="22" font-weight="bold" fill="#ff0088" opacity="0.85" letter-spacing="3">NEON</text>
+  <text x="10"   y="324" font-family="monospace" font-size="14" fill="#cc0055" opacity="0.72" letter-spacing="5">DISTRICT</text>
+  <!-- Animated scan line on billboard -->
+  <rect x="3"    y="261" width="142" height="74"  fill="url(#scanBar)" opacity="0.6">
+    <animateTransform attributeName="transform" type="translate" from="0,-74" to="0,74" dur="3s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- ===== LARGE RIGHT FOREGROUND BUILDING ===== -->
+  <rect x="1440" y="65"  width="180" height="435" fill="url(#fg2)"/>
+  <!-- Structural column left edge -->
+  <rect x="1440" y="65"  width="6"   height="435" fill="#1a1438" opacity="0.80"/>
+  <!-- Roof detail -->
+  <rect x="1440" y="52"  width="160" height="13"  fill="#14103a" opacity="0.95"/>
+  <rect x="1440" y="50"  width="160" height="3"   fill="#00ffcc" opacity="0.72" filter="url(#glow)"/>
+  <!-- Cooling systems / AC units on roof -->
+  <rect x="1456" y="38"  width="36"  height="14"  fill="#100e28" opacity="0.88"/>
+  <rect x="1502" y="40"  width="28"  height="12"  fill="#0e0c26" opacity="0.88"/>
+  <rect x="1544" y="36"  width="40"  height="16"  fill="#120e2c" opacity="0.88"/>
+  <!-- Warning blink right building -->
+  <circle cx="1538" cy="48" r="4"   fill="#ff3333" opacity="0.80">
+    <animate attributeName="opacity" values="0.1;0.95;0.1" dur="1.4s" begin="0.2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Window facade right building -->
+  <g fill="#ffcc00" opacity="0.30">
+    <rect x="1448" y="78"  width="12" height="8"/><rect x="1466" y="78"  width="12" height="8"/><rect x="1484" y="78"  width="12" height="8"/><rect x="1502" y="78"  width="12" height="8"/><rect x="1520" y="78"  width="12" height="8"/><rect x="1538" y="78"  width="12" height="8"/><rect x="1556" y="78"  width="12" height="8"/>
+    <rect x="1448" y="95"  width="12" height="8"/>                                              <rect x="1484" y="95"  width="12" height="8"/>                                              <rect x="1520" y="95"  width="12" height="8"/>                                              <rect x="1556" y="95"  width="12" height="8"/>
+    <rect x="1466" y="112" width="12" height="8"/><rect x="1502" y="112" width="12" height="8"/><rect x="1538" y="112" width="12" height="8"/>
+    <rect x="1448" y="129" width="12" height="8"/><rect x="1484" y="129" width="12" height="8"/>
+    <rect x="1466" y="146" width="12" height="8"/><rect x="1520" y="146" width="12" height="8"/><rect x="1556" y="146" width="12" height="8"/>
+    <rect x="1448" y="163" width="12" height="8"/><rect x="1502" y="163" width="12" height="8"/>
+    <rect x="1484" y="180" width="12" height="8"/><rect x="1538" y="180" width="12" height="8"/>
+    <rect x="1448" y="197" width="12" height="8"/><rect x="1466" y="197" width="12" height="8"/><rect x="1520" y="197" width="12" height="8"/>
+  </g>
+  <g fill="#00ffcc" opacity="0.36">
+    <rect x="1466" y="78"  width="12" height="8"/>
+    <rect x="1466" y="95"  width="12" height="8"/><rect x="1502" y="95"  width="12" height="8"/><rect x="1538" y="95"  width="12" height="8"/>
+    <rect x="1448" y="112" width="12" height="8"/>
+    <rect x="1502" y="129" width="12" height="8"/>
+    <rect x="1448" y="146" width="12" height="8"/>
+    <rect x="1538" y="163" width="12" height="8"/>
+    <rect x="1448" y="180" width="12" height="8"/>
+  </g>
+  <!-- Fire escape right building -->
+  <g fill="none" stroke="#1a1640" stroke-width="1.5" opacity="0.65">
+    <rect x="1470" y="75" width="18" height="20" fill="none"/>
+    <line x1="1470" y1="85"  x2="1488" y2="85"/>
+    <rect x="1470" y="101" width="18" height="20" fill="none"/>
+    <line x1="1470" y1="111" x2="1488" y2="111"/>
+    <rect x="1470" y="127" width="18" height="20" fill="none"/>
+    <line x1="1470" y1="137" x2="1488" y2="137"/>
+    <rect x="1470" y="153" width="18" height="20" fill="none"/>
+    <line x1="1470" y1="163" x2="1488" y2="163"/>
+  </g>
+  <!-- Billboard right -->
+  <rect x="1448" y="248" width="142" height="75"  fill="#060414" opacity="0.95" rx="3"/>
+  <rect x="1448" y="248" width="142" height="3"   fill="#00ffcc" opacity="0.88" filter="url(#glow)"/>
+  <rect x="1448" y="320" width="142" height="3"   fill="#00ffcc" opacity="0.88" filter="url(#glow)"/>
+  <rect x="1448" y="251" width="3"   height="69"  fill="#00ffcc" opacity="0.88" filter="url(#glow)"/>
+  <rect x="1587" y="251" width="3"   height="69"  fill="#00ffcc" opacity="0.88" filter="url(#glow)"/>
+  <text x="1458" y="286" font-family="monospace" font-size="18" font-weight="bold" fill="#00ffcc" opacity="0.85" letter-spacing="2">CYBER</text>
+  <text x="1460" y="310" font-family="monospace" font-size="12" fill="#009988" opacity="0.72" letter-spacing="4">SYS-X</text>
+  <!-- Animated scan line right billboard -->
+  <rect x="1451" y="251" width="136" height="69"  fill="url(#scanBar)" opacity="0.6">
+    <animateTransform attributeName="transform" type="translate" from="0,-69" to="0,69" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- ===== CABLE / WIRE DETAILS ===== -->
+  <!-- Hanging power cables left to centre -->
+  <path d="M 160 380 Q 400 420 620 390" fill="none" stroke="#0c0a20" stroke-width="2" opacity="0.70"/>
+  <path d="M 155 395 Q 380 440 615 405" fill="none" stroke="#0a0818" stroke-width="1.5" opacity="0.60"/>
+  <path d="M 158 410 Q 360 455 618 418" fill="none" stroke="#0c0a20" stroke-width="1" opacity="0.50"/>
+  <!-- Right side cables -->
+  <path d="M 980 375 Q 1200 410 1444 382" fill="none" stroke="#0c0a20" stroke-width="2" opacity="0.70"/>
+  <path d="M 985 392 Q 1180 428 1442 398" fill="none" stroke="#0a0818" stroke-width="1.5" opacity="0.60"/>
+</svg>

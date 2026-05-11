@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Moon core glow -->
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#fffde0" stop-opacity="1"/>
+      <stop offset="28%"  stop-color="#ffefc0" stop-opacity="0.96"/>
+      <stop offset="56%"  stop-color="#ffd080" stop-opacity="0.60"/>
+      <stop offset="75%"  stop-color="#c090ff" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Halo ring -->
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="60%"  stop-color="transparent" stop-opacity="0"/>
+      <stop offset="72%"  stop-color="#c0a0ff"     stop-opacity="0.10"/>
+      <stop offset="84%"  stop-color="#8060cc"     stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Crater shading -->
+    <radialGradient id="crater1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#b0a060" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="crater2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#a09050" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Moon limb shadow (gibbous phase) -->
+    <radialGradient id="limbShadow" cx="72%" cy="50%" r="55%">
+      <stop offset="0%"   stop-color="#000010" stop-opacity="0.62"/>
+      <stop offset="55%"  stop-color="#040410" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer atmospheric halo (very soft, large) -->
+  <ellipse cx="1240" cy="88" rx="145" ry="145" fill="url(#halo)"/>
+
+  <!-- Moon body -->
+  <circle cx="1240" cy="88" r="58" fill="url(#moonGlow)"/>
+
+  <!-- Surface tonal variation -->
+  <ellipse cx="1222" cy="72"  rx="28" ry="22" fill="#c8b870" opacity="0.14"/>
+  <ellipse cx="1258" cy="102" rx="22" ry="16" fill="#a09050" opacity="0.10"/>
+
+  <!-- Craters -->
+  <!-- Large crater -->
+  <ellipse cx="1218" cy="80" rx="12" ry="10" fill="url(#crater1)"/>
+  <ellipse cx="1218" cy="80" rx="12" ry="10" fill="none" stroke="#b09840" stroke-width="0.8" opacity="0.30"/>
+  <!-- Medium crater -->
+  <ellipse cx="1255" cy="65" rx="7"  ry="6"  fill="url(#crater2)"/>
+  <ellipse cx="1255" cy="65" rx="7"  ry="6"  fill="none" stroke="#a08830" stroke-width="0.6" opacity="0.25"/>
+  <!-- Small craters -->
+  <circle  cx="1235" cy="106" r="4" fill="#b09840" opacity="0.18"/>
+  <circle  cx="1265" cy="90"  r="3" fill="#a08830" opacity="0.15"/>
+  <circle  cx="1205" cy="95"  r="3" fill="#b09840" opacity="0.16"/>
+  <circle  cx="1248" cy="110" r="2" fill="#a08830" opacity="0.12"/>
+  <circle  cx="1278" cy="72"  r="2" fill="#b09840" opacity="0.13"/>
+
+  <!-- Gibbous phase limb shadow -->
+  <circle cx="1240" cy="88" r="58" fill="url(#limbShadow)"/>
+
+  <!-- Hard terminator edge (subtle) -->
+  <path d="M1240,30 Q1280,60 1280,88 Q1280,116 1240,146" fill="none" stroke="#40206080" stroke-width="1.5" opacity="0.30"/>
+
+  <!-- Atmospheric rim light (soft cyan) -->
+  <circle cx="1240" cy="88" r="58" fill="none" stroke="#80c8ff" stroke-width="1.5" opacity="0.18"/>
+
+  <!-- Moon reflection smear on lower clouds (implied, very soft) -->
+  <ellipse cx="1240" cy="200" rx="120" ry="40" fill="#6030a0" opacity="0.04"/>
+</svg>

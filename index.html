@@ -6,6 +6,8 @@
     <title>shiack · 全栈架构师 | CyberGeek</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/base/effects.css">
+    <link rel="stylesheet" href="assets/css/components/parallax-banner.css">
+    <link rel="stylesheet" href="assets/css/components/pixel-banner.css">
     <script src="assets/js/modules/blog-data.js"></script>
     <script src="assets/js/modules/music-config.js"></script>
     <link rel="stylesheet" href="assets/css/components/music-player.css">
@@ -14,8 +16,18 @@
     <canvas id="particles-canvas" class="particles-canvas"></canvas>
     <div id="musicPlayerContainer"></div>
 
+    <!-- 视差横幅已移至导航栏下方 -->
+
     <div class="container">
-        <div id="site-nav"></div>
+        <!-- 导航栏：sticky 固定，滚动时保持顶部 -->
+        <div class="nav-sticky-wrap">
+            <div id="site-nav"></div>
+        </div>
+
+        <!-- 横幅区域：导航栏下方，随页面自然滚动 -->
+        <div class="banner-wrapper">
+            <div id="pixel-banner-container"></div>
+        </div>
 
         <div class="main-content">
             <div class="page-content">
@@ -138,6 +150,8 @@
     </div>
 
     <script src="assets/js/components/music-player.js"></script>
+    <script src="assets/js/components/pixel-banner.js"></script>
+    <script src="assets/js/components/parallax-banner.js"></script>
     <script type="module">
         import { injectThemeToggle, initTheme }      from '/assets/js/core/theme.js';
         import { mountNav }                          from '/assets/js/core/nav.js';
