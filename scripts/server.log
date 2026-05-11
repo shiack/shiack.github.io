@@ -1,0 +1,106 @@
+Serving /root/hy-data/1_claude/shiack.github.io
+Listening on http://0.0.0.0:7861
+125.84.200.104 - - [11/May/2026 04:20:30] "GET / HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/css/components/parallax-banner.css HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/css/main.css HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/css/base/effects.css HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/css/components/pixel-banner.css HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/css/components/music-player.css HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/modules/blog-data.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/modules/music-config.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/components/music-player.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/components/pixel-banner.js HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/components/parallax-banner.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/core/effects.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/core/nav.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/js/core/theme.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:30] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%201/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/8.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/7.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/2.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/7.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%204/1.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%208/4.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%206/5.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%207/3.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%203/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:30] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%205/6.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/images/parallax/pixel-city/city%202/7.png HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:30] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:30] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:46] "GET /pages/blog/index.html HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:46] "GET /assets/js/core/utils.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:46] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:46] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:46] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:46] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:46] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:46] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:46] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:46] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:47] "GET /pages/cms/index.html HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:47] "GET /assets/css/components/email-subscribe.css HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:47] "GET /assets/js/modules/email-subscribe.js HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:47] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:47] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:47] "GET /assets/posts/cms/cms-index.json HTTP/1.1" 304 -
+125.84.200.104 - - [11/May/2026 04:20:48] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:48] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:48] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:48] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:48] "GET /index.html HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 200 -
+125.84.200.104 - - [11/May/2026 04:20:48] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:48] code 404, message File not found
+125.84.200.104 - - [11/May/2026 04:20:48] "HEAD /assets/music/%E9%BB%91%E8%B1%B9%E4%B9%90%E9%98%9F%20-%20%E6%97%A0%E5%9C%B0%E8%87%AA%E5%AE%B9.mp3 HTTP/1.1" 404 -
+125.84.200.104 - - [11/May/2026 04:20:48] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
+125.84.200.104 - - [11/May/2026 04:20:48] "GET /assets/music/Brian%20Cheng%20-%20Bye%20Bye%20Monica.mp3 HTTP/1.1" 206 -
