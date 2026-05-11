@@ -137,6 +137,37 @@
     }
 }
 
+/* ==================== 全景场景 ==================== */
+
+/* 全景层：横向铺 4 座城市（400%），各层独立平移速度 */
+.panorama-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 400%;        /* 4 城市 × 100% banner 宽 */
+    display: flex;
+    will-change: transform;
+    transition: none;   /* rAF 直接驱动，禁用 CSS 过渡避免延迟 */
+}
+
+/* 每个城市占 1/4 条带宽度，即刚好 1 个 banner 宽 */
+.city-slot {
+    flex: 0 0 25%;
+    height: 100%;
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* 全景指示点：宽矩形，暗示横向滚动 */
+.pixel-dot-pano {
+    width: 22px;
+    border-radius: 2px;
+}
+
 /* ==================== 减少动画模式 ==================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -146,5 +177,8 @@
     }
     .pixel-scene {
         transition: opacity 0.3s ease !important;
+    }
+    .panorama-layer {
+        transition: none !important;
     }
 }
