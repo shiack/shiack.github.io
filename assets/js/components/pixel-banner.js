@@ -54,6 +54,7 @@
 
             this._render();
             this._bindEvents();
+            this._bindScrollDim();
             this._startLoop();
         }
 
@@ -153,7 +154,34 @@
             });
         }
 
-        destroy() { cancelAnimationFrame(this.raf); }
+        destroy() {
+            cancelAnimationFrame(this.raf);
+            this._cleanupScrollDim?.();
+        }
+
+        // ── 滚动渐隐 ─────────────────────────────────────────────────────────
+        // 当 banner 底部滚过视口 60% 时开始变暗，离屏时降至 35% 不透明度。
+        // 强化"离开城市、进入简历"的景深切换感。
+        _bindScrollDim() {
+            const wrapper = this.wrap.closest('.banner-wrapper');
+            if (!wrapper || this.isReducedMotion) return;
+
+            let ticking = false;
+            const onScroll = () => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(() => {
+                    const bottom = wrapper.getBoundingClientRect().bottom;
+                    const threshold = window.innerHeight * 0.6;
+                    const progress = Math.max(0, Math.min(1, (threshold - bottom) / threshold));
+                    wrapper.style.opacity = (1 - progress * 0.65).toFixed(3);
+                    ticking = false;
+                });
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            this._cleanupScrollDim = () => window.removeEventListener('scroll', onScroll);
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
