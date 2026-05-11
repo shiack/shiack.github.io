@@ -6,7 +6,6 @@
     <title>shiack · 全栈架构师 | CyberGeek</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/base/effects.css">
-    <link rel="stylesheet" href="assets/css/components/parallax-banner.css">
     <link rel="stylesheet" href="assets/css/components/pixel-banner.css">
     <script src="assets/js/modules/blog-data.js"></script>
     <script src="assets/js/modules/music-config.js"></script>
@@ -19,18 +18,19 @@
     <!-- 视差横幅已移至导航栏下方 -->
 
     <div class="container">
-        <div id="site-nav"></div>
-
-        <!-- 横幅区域：导航栏下方 -->
-        <div class="banner-wrapper">
-            <!-- Banner 1：像素风都市 -->
-            <div id="pixel-banner-container"></div>
-            <!-- Banner 2：实拍都市视差 -->
-            <!-- <div id="parallax-banner-container"></div> -->
+        <!-- 导航栏：sticky 固定，滚动时保持顶部 -->
+        <div class="nav-sticky-wrap">
+            <div id="site-nav"></div>
         </div>
 
-        <div class="main-content">
+        <!-- 横幅区域：导航栏下方，随页面自然滚动 -->
+        <div class="banner-wrapper">
+            <div id="pixel-banner-container"></div>
+        </div>
+
+        <div class="main-content" style="position:relative;z-index:3;padding-top:3.5rem">
             <div class="page-content">
+                <!-- <div class="banner-neon-bridge" aria-hidden="true"></div> -->
                 <div class="cyber-card reveal neon-lift" style="animation-delay:.1s">
                     <div class="resume-header">
                         <div class="avatar holo-shimmer">🤖</div>
@@ -151,7 +151,6 @@
 
     <script src="assets/js/components/music-player.js"></script>
     <script src="assets/js/components/pixel-banner.js"></script>
-    <script src="assets/js/components/parallax-banner.js"></script>
     <script type="module">
         import { injectThemeToggle, initTheme }      from '/assets/js/core/theme.js';
         import { mountNav }                          from '/assets/js/core/nav.js';
