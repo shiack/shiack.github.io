@@ -297,43 +297,26 @@ class MusicPlayer {
      * - 失败时绑定 click / keydown 一次性监听器，等用户交互后再播放
      */
     tryAutoPlay() {
-        // 检查是否已经尝试过自动播放（避免主题切换时重复触发）
         const hasTriedAutoPlay = localStorage.getItem('musicPlayerAutoPlayTried');
-        if (hasTriedAutoPlay === 'true') {
-            console.log('已尝试过自动播放，跳过');
-            return;
-        }
-
-        // 标记已尝试过自动播放
+        if (hasTriedAutoPlay === 'true') return;
         localStorage.setItem('musicPlayerAutoPlayTried', 'true');
 
-        console.log('尝试自动播放...');
-
+        // 仅用 click 作为回退触发，避免干扰空格键播放/暂停逻辑
         const autoPlayCallback = () => {
-            console.log('用户交互后尝试播放');
-            this.play();
-            document.removeEventListener('click', autoPlayCallback);
-            document.removeEventListener('keydown', autoPlayCallback);
+            if (!this.isPlaying) this.play();
         };
 
-        // 立即尝试播放（不依赖canplay事件）
         const attemptPlay = () => {
             this.audioPlayer.play().then(() => {
-                console.log('自动播放成功！');
                 document.removeEventListener('click', autoPlayCallback);
-                document.removeEventListener('keydown', autoPlayCallback);
-            }).catch((error) => {
-                console.log('浏览器阻止自动播放，等待用户交互:', error.message);
+            }).catch(() => {
                 document.addEventListener('click', autoPlayCallback, { once: true });
-                document.addEventListener('keydown', autoPlayCallback, { once: true });
             });
         };
 
-        // 如果音频已经可以播放，立即尝试
-        if (this.audioPlayer.readyState >= 3) { // HAVE_FUTURE_DATA 或更高
+        if (this.audioPlayer.readyState >= 3) {
             attemptPlay();
         } else {
-            // 等待音频加载后再尝试
             this.audioPlayer.addEventListener('canplay', attemptPlay, { once: true });
         }
     }
@@ -560,16 +543,19 @@ class MusicPlayer {
             this.stopDrag();
         });
 
-        // 键盘快捷键
+        // 键盘快捷键：焦点在可交互元素上时不触发
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !e.target.tagName.match(/INPUT|TEXTAREA/)) {
+            const tag = document.activeElement?.tagName ?? '';
+            if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(tag)) return;
+
+            if (e.code === 'Space') {
                 e.preventDefault();
                 this.togglePlay();
-            }
-            if (e.code === 'ArrowLeft') {
+            } else if (e.code === 'ArrowLeft') {
+                e.preventDefault();
                 this.seekTo(this.audioPlayer.currentTime - 5);
-            }
-            if (e.code === 'ArrowRight') {
+            } else if (e.code === 'ArrowRight') {
+                e.preventDefault();
                 this.seekTo(this.audioPlayer.currentTime + 5);
             }
         });
@@ -878,10 +864,4 @@ class MusicPlayer {
     }
 }
 
-// 初始化音乐播放器
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('MusicPlayer DOMContentLoaded 触发');
-    const player = new MusicPlayer();
-    console.log('MusicPlayer 实例创建完成，曲目数:', player.tracks ? player.tracks.length : 0);
-    player.init();
-});
+// 由页面脚本负责实例化，此处不自动初始化

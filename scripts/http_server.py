@@ -10,6 +10,7 @@ import os
 import sys
 import signal
 import argparse
+import threading
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 # 客户端主动断连产生的无害异常类型
@@ -96,6 +97,8 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             return
         super().log_error(fmt, *args)
 
+    def address_string(self):
+        return '-'
 
 class StaticServer(ThreadingHTTPServer):
     """多线程 HTTP 服务器，屏蔽客户端断连异常。"""
@@ -122,7 +125,7 @@ def main():
 
     def _shutdown(sig, frame):
         print('\nShutting down…', flush=True)
-        server.shutdown()
+        threading.Thread(target=server.shutdown, daemon=True).start()
 
     signal.signal(signal.SIGTERM, _shutdown)
     signal.signal(signal.SIGINT,  _shutdown)

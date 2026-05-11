@@ -10,8 +10,8 @@ ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 HOST="0.0.0.0"
 PORT="7861"
-PID_FILE="$SCRIPT_DIR/server.pid"
-LOG_FILE="$SCRIPT_DIR/server.log"
+PID_FILE="$SCRIPT_DIR/app.pid"
+LOG_FILE="$SCRIPT_DIR/app.log"
 
 # SIGTERM 后等待进程退出的最长秒数，超时则 SIGKILL
 STOP_TIMEOUT=5
@@ -66,7 +66,7 @@ cmd_start() {
     nohup python3 "$SCRIPT_DIR/http_server.py" \
         --bind "$HOST" --port "$PORT" --directory "$ROOT_DIR" \
         >> "$LOG_FILE" 2>&1 &
-
+    
     local pid=$!
     echo "$pid" > "$PID_FILE"
 

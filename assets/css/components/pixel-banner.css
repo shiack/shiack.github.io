@@ -1,91 +1,105 @@
-/* ==================== 像素风都市 Banner ==================== */
+/* ==================== 像素风都市全景 Banner ==================== */
 
 #pixel-banner-container {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 100%;
     overflow: hidden;
-    background: #0d0221;
+    background: #0a0118;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
 
-/* 每个城市场景，绝对叠放，通过 .active 控制可见 */
-.pixel-scene {
+/* 视差场景容器 */
+.pixel-parallax-scene {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+}
+
+/* 深度层：填满容器，background-position-x 驱动水平视差，repeat-x 无限滚动 */
+.pixel-depth-layer {
+    position: absolute;
+    inset: 0;
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    background-position: 50% bottom;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    will-change: background-position;
+}
+
+/* ── 渐变融合层 ── */
+
+/* 顶部：从导航栏背景色渐隐入城市 */
+.banner-fade-top {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 28%;
+    background: linear-gradient(
+        to bottom,
+        var(--bg-gradient-mid, #050508) 0%,
+        transparent 100%
+    );
+    z-index: 10;
     pointer-events: none;
 }
 
-.pixel-scene.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* 视差层：扩展 ±8% 防位移露白边 */
-.pixel-layer {
+/* 底部：城市渐隐融入页面背景 */
+.banner-fade-bottom {
     position: absolute;
-    top: -8%;
-    left: -6%;
-    width: 112%;
-    height: 116%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    transition: transform 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-}
-
-/* ==================== 指示器小圆点 ==================== */
-
-.pixel-indicators {
-    position: absolute;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
+    bottom: 0; left: 0;
+    width: 100%; height: 55%;
+    background: linear-gradient(
+        to top,
+        var(--bg-gradient-mid, #050508) 0%,
+        color-mix(in srgb, var(--bg-gradient-mid, #050508) 55%, transparent) 40%,
+        transparent 100%
+    );
     z-index: 10;
+    pointer-events: none;
 }
 
-.pixel-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 0;          /* 像素风：方形 */
-    border: 1.5px solid rgba(255, 255, 255, 0.50);
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-    outline: none;
-    transition: all 0.2s;
-    image-rendering: pixelated;
+/* 左右暗角，视线聚焦到中央城市 */
+.banner-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 90% 100% at 50% 60%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.55) 100%
+    );
+    z-index: 9;
+    pointer-events: none;
 }
 
-.pixel-dot:hover {
-    border-color: rgba(255, 255, 255, 0.90);
-    transform: scale(1.4);
-}
-
-.pixel-dot.active {
-    background: #fff;
-    border-color: #fff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.80);
+/* ── 扫描线氛围叠加（CRT 像素风） ── */
+#pixel-banner-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 0, 0, 0.06) 3px,
+        rgba(0, 0, 0, 0.06) 4px
+    );
+    z-index: 8;
+    pointer-events: none;
 }
 
 /* ==================== 横幅包装：全宽突破 container padding ==================== */
 
 .banner-wrapper {
     position: relative;
-    height: 400px;
+    height: 580px;
     overflow: hidden;
-    /* 突破 container 的 padding（2rem 两侧），实现全宽 */
     margin-left:  -2rem;
     margin-right: -2rem;
+    /* 顶部与导航栏紧贴 */
+    margin-top: -1px;
+    /* 底部负边距让主内容卡片浮现到渐变区内，实现无缝衔接 */
+    margin-bottom: -90px;
 }
 
 /* ==================== 导航栏 sticky ==================== */
@@ -96,14 +110,12 @@
     z-index: 100;
     background: var(--bg-gradient-mid, #050508);
     border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
-    /* 同样需要突破 container padding */
     margin-left:  -2rem;
     margin-right: -2rem;
     padding-left:  2rem;
     padding-right: 2rem;
 }
 
-/* 避免 nav-bar 本身再有 border-bottom（与 sticky-wrap 重复） */
 .nav-sticky-wrap .nav-bar {
     border-bottom: none;
     margin-bottom: 0;
@@ -112,21 +124,15 @@
 /* ==================== 响应式 ==================== */
 
 @media (max-width: 1199px) {
-    #pixel-banner-container,
-    .banner-wrapper {
-        height: 320px;
-    }
+    .banner-wrapper { height: 420px; }
 }
 
 @media (max-width: 767px) {
-    #pixel-banner-container,
     .banner-wrapper {
-        height: 240px;
-    }
-
-    .banner-wrapper {
-        margin-left:  -1rem;
-        margin-right: -1rem;
+        height: 280px;
+        margin-left:   -1rem;
+        margin-right:  -1rem;
+        margin-bottom: -50px;
     }
 
     .nav-sticky-wrap {
@@ -135,50 +141,15 @@
         padding-left:  1rem;
         padding-right: 1rem;
     }
-}
 
-/* ==================== 全景场景 ==================== */
-
-/* 全景层：横向铺 4 座城市（400%），各层独立平移速度 */
-.panorama-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 400%;        /* 4 城市 × 100% banner 宽 */
-    display: flex;
-    will-change: transform;
-    transition: none;   /* rAF 直接驱动，禁用 CSS 过渡避免延迟 */
-}
-
-/* 每个城市占 1/4 条带宽度，即刚好 1 个 banner 宽 */
-.city-slot {
-    flex: 0 0 25%;
-    height: 100%;
-    background-size: cover;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-}
-
-/* 全景指示点：宽矩形，暗示横向滚动 */
-.pixel-dot-pano {
-    width: 22px;
-    border-radius: 2px;
+    .banner-fade-top    { height: 20%; }
+    .banner-fade-bottom { height: 45%; }
 }
 
 /* ==================== 减少动画模式 ==================== */
 
 @media (prefers-reduced-motion: reduce) {
-    .pixel-layer {
-        transition: none !important;
-        transform: translate3d(0, 0, 0) !important;
-    }
-    .pixel-scene {
-        transition: opacity 0.3s ease !important;
-    }
-    .panorama-layer {
-        transition: none !important;
+    .pixel-depth-layer {
+        will-change: auto;
     }
 }
